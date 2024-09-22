@@ -60,7 +60,6 @@ class PriorityQueue:
         # Now swap it upwards with its parent until heap order is restored
         while ix > 0 and self._arr[ix].get_key() < self._arr[self._parent(ix)].get_key():
             parent_ix = self._parent(ix)
-            print("Data is: " + str(ix) + " and parent is: " + str(parent_ix))
             self._arr[ix], self._arr[parent_ix] = self._arr[parent_ix], self._arr[ix]
             ix = parent_ix
 
@@ -99,7 +98,6 @@ class PriorityQueue:
         result = self._arr[0]
         self._arr[0] = self._arr[self.get_size() - 1]
         self._arr.remove_at(self.get_size() - 1)
-        print("String 2 is " + str(self._arr[2].get_key()))
 
         cur = 0
         while cur < self.get_size():
