@@ -30,7 +30,20 @@ def test_pqueue() -> None:
     my_pq = PriorityQueue()
     my_pq.insert(0, "highest priority item")
     my_pq.insert(10, "priority value 10 item")
-    assert my_pq.get_size() == 2
+    my_pq.insert(1, "highest priority item")
+    my_pq.insert(9, "priority value 10 item")
+    my_pq.insert(12, "highest priority item")
+    my_pq.insert(3, "priority value 10 item")
+    print(my_pq)
+    my_pq.remove_min()
+    print(my_pq)
+    my_pq.remove_min()
+    print(my_pq)
+    my_pq.insert(50, "highest priority item")
+    print(my_pq)
+    my_pq.remove_min()
+    print(my_pq)
+    print("==== Executing Priority Queue Tests ====")
 
     """
     This one is up to you - we provided most of the code already :-)
