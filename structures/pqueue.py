@@ -150,6 +150,38 @@ class PriorityQueue:
         use the DynamicArray build_from_list function. You must use
         only O(1) extra space.
         """
+        self._arr.build_from_list(input_list)
+        elem = self.get_size() - 1
+        
+        if elem % 2 == 1:
+            #Last element is left child
+            if self._arr[elem].get_key() < self._arr[self._parent(elem)].get_key():
+                #Child is smaller than parent, up heap
+                parent = self._parent(elem)
+                self._arr[elem], self._arr[parent] = self._arr[parent], self._arr[elem]
+            elem -= 1
+        
+        #All remaining nodes have two children per parents
+        right = elem
+        left = elem - 1
+        
+        while left > 0:         
+            
+            if self._arr[left].get_key() < self._arr[right].get_key():
+                #left child is smaller
+                smaller = left
+            else: 
+                smaller = right
+            
+            if self._arr[smaller].get_key() < self._arr[self._parent(smaller)].get_key():
+                # left child is smaller than parent, up heap
+                parent = self._parent(smaller)
+                self._arr[smaller], self._arr[parent] = self._arr[parent], self._arr[smaller]
+            
+            right -= 2
+            left -= 2
+        return
+                
 
     def sort(self) -> DynamicArray:
         """

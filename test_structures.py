@@ -44,6 +44,10 @@ def test_pqueue() -> None:
     my_pq.remove_min()
     print(my_pq)
     print("==== Executing Priority Queue Tests ====")
+    pq1 = PriorityQueue()
+    list = [Entry(10, "hi"), Entry(0, "Yo"), Entry(2, "Haha"), Entry(13, "gg")]
+    pq1.ip_build(list)
+    print(pq1)
 
     """
     This one is up to you - we provided most of the code already :-)
