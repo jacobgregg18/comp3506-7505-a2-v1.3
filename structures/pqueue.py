@@ -150,8 +150,10 @@ class PriorityQueue:
         use the DynamicArray build_from_list function. You must use
         only O(1) extra space.
         """
-        self._arr.build_from_list(input_list)
+        #self._arr.build_from_list(input_list._data)
+        self._arr = input_list
         elem = self.get_size() - 1
+        #print(str(elem))
         
         if elem % 2 == 1:
             #Last element is left child

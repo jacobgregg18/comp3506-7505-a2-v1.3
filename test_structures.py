@@ -45,7 +45,11 @@ def test_pqueue() -> None:
     print(my_pq)
     print("==== Executing Priority Queue Tests ====")
     pq1 = PriorityQueue()
-    list = [Entry(10, "hi"), Entry(0, "Yo"), Entry(2, "Haha"), Entry(13, "gg")]
+    list = DynamicArray()
+    list.append(Entry(10, "hi"))
+    list.append(Entry(0, "Yo"))
+    list.append(Entry(2, "Haha"))
+    list.append(Entry(13, "gg"))
     pq1.ip_build(list)
     print(pq1)
 
