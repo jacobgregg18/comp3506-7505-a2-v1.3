@@ -155,33 +155,12 @@ class PriorityQueue:
         elem = self.get_size() - 1
         #print(str(elem))
         
-        if elem % 2 == 1:
-            #Last element is left child
-            if self._arr[elem].get_key() < self._arr[self._parent(elem)].get_key():
-                #Child is smaller than parent, up heap
-                parent = self._parent(elem)
-                self._arr[elem], self._arr[parent] = self._arr[parent], self._arr[elem]
+        #Loop through from bottom right to top
+        #Simulates bottom up construction with continous downheaps per node
+        while elem >= 0:
+            self.down_heap(elem)
             elem -= 1
         
-        #All remaining nodes have two children per parents
-        right = elem
-        left = elem - 1
-        
-        while left > 0:         
-            
-            if self._arr[left].get_key() < self._arr[right].get_key():
-                #left child is smaller
-                smaller = left
-            else: 
-                smaller = right
-            
-            if self._arr[smaller].get_key() < self._arr[self._parent(smaller)].get_key():
-                # left child is smaller than parent, up heap
-                parent = self._parent(smaller)
-                self._arr[smaller], self._arr[parent] = self._arr[parent], self._arr[smaller]
-            
-            right -= 2
-            left -= 2
         return
                 
 
@@ -197,3 +176,33 @@ class PriorityQueue:
         array back to the caller).
         """
         return self._arr
+    
+    def down_heap(self, elem: int) -> None:
+        
+        leftchild = elem * 2 + 1
+        rightchild = elem * 2 + 2
+        smallest = elem
+        
+        while elem < self.get_size():
+            if leftchild < self.get_size() and self._arr[leftchild].get_key() < self._arr[elem].get_key():
+                #Left child is in heap and smaller
+                if rightchild < self.get_size() and self._arr[rightchild].get_key() < self._arr[elem].get_key():
+                    #Both children are in heap and smaller
+                    if self._arr[leftchild].get_key() > self._arr[rightchild].get_key():
+                    #Left child greater than right child
+                        smallest = rightchild
+                    else:
+                        #Right child greater than left child
+                        smallest = leftchild
+                else:
+                    #Right child not in heap but left requires down heap
+                    smallest = leftchild
+
+            if smallest != elem:
+                self._arr[elem], self._arr[smallest] = (
+                    self._arr[smallest],
+                    self._arr[elem],
+                )
+                elem = smallest
+            else:
+                break
