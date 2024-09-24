@@ -73,12 +73,20 @@ def test_pqueue() -> None:
     list.append(Entry(1110, "gg"))
     pq1.ip_build(list)
     print(pq1)
+    pq1.sort()
+    print(pq1)
     for x in range(24):
         pq1.remove_min()
-        print(pq1)
+        #print(pq1)
         
     for x in range(1000):
         pq1.insert_fifo(x+3)
+    
+    for x in range(1000):
+        y = pq1.remove_min()
+        if ((x+3) != y):
+            print(pq1)
+            
 
     """
     This one is up to you - we provided most of the code already :-)

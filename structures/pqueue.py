@@ -168,6 +168,18 @@ class PriorityQueue:
         destroyed and will not be used again (hence returning the underlying
         array back to the caller).
         """
+        count = self.get_size()
+        new_list = DynamicArray()
+        
+        for x in range(count):
+            smallestValue = self.get_min_value()
+            smallestKey = self.get_min_priority()
+            self.remove_min()
+            
+            Small = Entry(smallestKey, smallestValue)
+            new_list.append(Small)
+        
+        self._arr = new_list
         return self._arr
     
     def down_heap(self, elem: int) -> None:
