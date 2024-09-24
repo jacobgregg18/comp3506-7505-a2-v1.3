@@ -95,11 +95,11 @@ class PriorityQueue:
         self._arr.remove_at(self.get_size() - 1)
 
         ix = 0
+        smallest = ix
+        
         while ix < self.get_size():
             left = ix * 2 + 1
             right = ix * 2 + 2
-
-            smallest = ix
             
             if left < self.get_size():
                 #left child is in heap
@@ -112,15 +112,13 @@ class PriorityQueue:
                         #Right child is smaller than parent and smaller than left child
                         smallest = right
                 else:
+                    #Left child in heap, no right child
                     if self._arr[left].get_key() < self._arr[ix].get_key():
                         #Left child is only child and smaller than parent
                         smallest = left
                         
             if smallest != ix:
-                self._arr[ix], self._arr[smallest] = (
-                    self._arr[smallest],
-                    self._arr[ix],
-                )
+                self._arr[ix], self._arr[smallest] = (self._arr[smallest], self._arr[ix])
                 ix = smallest
             else:
                 break
@@ -147,10 +145,8 @@ class PriorityQueue:
         use the DynamicArray build_from_list function. You must use
         only O(1) extra space.
         """
-        #self._arr.build_from_list(input_list._data)
         self._arr = input_list
         elem = self.get_size() - 1
-        #print(str(elem))
         
         #Loop through from bottom right to top
         #Simulates bottom up construction with continous downheaps per node
@@ -198,10 +194,9 @@ class PriorityQueue:
                         smallest = left
               
             if smallest != elem:
-                self._arr[elem], self._arr[smallest] = (
-                    self._arr[smallest],
-                    self._arr[elem],
-                )
+                self._arr[elem], self._arr[smallest] = (self._arr[smallest], self._arr[elem])
                 elem = smallest
             else:
                 break
+        
+        return

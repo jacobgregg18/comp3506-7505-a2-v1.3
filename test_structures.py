@@ -50,7 +50,7 @@ def test_pqueue() -> None:
     list.append(Entry(0, "Yo"))
     list.append(Entry(2, "Haha"))
     list.append(Entry(13, "gg"))
-    list.append(Entry(10, "hi"))
+    list.append(Entry(11, "hi"))
     list.append(Entry(45, "Yo"))
     list.append(Entry(24, "Haha"))
     list.append(Entry(-12, "gg"))
@@ -58,8 +58,24 @@ def test_pqueue() -> None:
     list.append(Entry(1, "Yo"))
     list.append(Entry(58, "Haha"))
     list.append(Entry(7, "gg"))
+    
+    list.append(Entry(100, "hi"))
+    list.append(Entry(-1, "Yo"))
+    list.append(Entry(6, "Haha"))
+    list.append(Entry(-4, "gg"))
+    list.append(Entry(14, "hi"))
+    list.append(Entry(43, "Yo"))
+    list.append(Entry(5, "Haha"))
+    list.append(Entry(-22, "gg"))
+    list.append(Entry(-24, "hi"))
+    list.append(Entry(-23, "Yo"))
+    list.append(Entry(-50, "Haha"))
+    list.append(Entry(1110, "gg"))
     pq1.ip_build(list)
     print(pq1)
+    for x in range(24):
+        pq1.remove_min()
+        print(pq1)
 
     """
     This one is up to you - we provided most of the code already :-)
