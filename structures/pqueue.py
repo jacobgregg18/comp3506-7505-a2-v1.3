@@ -42,12 +42,7 @@ class PriorityQueue:
         if ix == 1 or ix == 2:
             return 0
         else:
-            if ix % 2 == 0:
-                #Right child
-                return (ix // 2) - 1
-            else:
-                #Left child
-                return (ix) // 2
+            return (ix - 1) // 2
 
     def insert(self, priority: int, data: Any) -> None:
         """
@@ -99,37 +94,37 @@ class PriorityQueue:
         self._arr[0] = self._arr[self.get_size() - 1]
         self._arr.remove_at(self.get_size() - 1)
 
-        cur = 0
-        while cur < self.get_size():
-            left = cur * 2 + 1
-            right = cur * 2 + 2
+        ix = 0
+        while ix < self.get_size():
+            left = ix * 2 + 1
+            right = ix * 2 + 2
 
-            smallest = cur
+            smallest = ix
             
             if left < self.get_size():
                 #left child is in heap
                 if right < self.get_size():
                     #right child is in heap
-                    if self._arr[left].get_key() < self._arr[cur].get_key() and self._arr[left].get_key() < self._arr[right].get_key():
+                    if self._arr[left].get_key() < self._arr[ix].get_key() and self._arr[left].get_key() < self._arr[right].get_key():
                         #Left child is smaller than parent and smaller than right child
                         smallest = left
-                    elif self._arr[right].get_key() < self._arr[cur].get_key() and self._arr[left].get_key() > self._arr[right].get_key():
+                    elif self._arr[right].get_key() < self._arr[ix].get_key() and self._arr[left].get_key() > self._arr[right].get_key():
                         #Right child is smaller than parent and smaller than left child
                         smallest = right
                 else:
-                    if self._arr[left].get_key() < self._arr[cur].get_key():
+                    if self._arr[left].get_key() < self._arr[ix].get_key():
                         #Left child is only child and smaller than parent
                         smallest = left
                         
-            if smallest != cur:
-                self._arr[cur], self._arr[smallest] = (
+            if smallest != ix:
+                self._arr[ix], self._arr[smallest] = (
                     self._arr[smallest],
-                    self._arr[cur],
+                    self._arr[ix],
                 )
-                cur = smallest
+                ix = smallest
             else:
                 break
-            
+        
         return result.get_value()
 
     def get_size(self) -> int:
