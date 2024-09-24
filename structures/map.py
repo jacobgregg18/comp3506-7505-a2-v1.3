@@ -20,6 +20,7 @@ get_hash function to return -1 for example.
 
 from typing import Any
 from structures.entry import Entry
+from structures.dynamic_array import DynamicArray
 
 class Map:
     """
@@ -33,7 +34,11 @@ class Map:
         You are free to make any changes you find suitable in this function
         to initialise your map.
         """
-        pass
+        self.size = 0
+        self.collisions = 0
+        self._arr = [None] * 113
+        self.capacity = 113
+        
 
     def insert(self, entry: Entry) -> Any | None:
         """
@@ -42,7 +47,42 @@ class Map:
         None otherwise. (We will not use None as a key or a value in our tests).
         Time complexity for full marks: O(1*)
         """
-        pass
+        hash = entry.get_hash()
+        
+        if self._arr[hash] == None:
+            #No element has been hashed yet
+            self._arr[hash] = entry
+            self.size += 1
+        else:
+            if self._arr[hash].get_key() == entry.get_key():
+                #This element is already stored in the array
+                retValue = self._arr[hash].get_value()
+                self._arr[hash] = entry
+                return retValue
+            else:
+                #Collision has occured, linear probe
+                for x in range(self.capacity / 2):
+                    if self._arr[hash - x].get_key() == entry.get_key():
+                        #This element is already stored in the array
+                        retValue = self._arr[hash - x].get_value()
+                        self._arr[hash - x] = entry
+                        return retValue
+                
+                #Value not already in linear probe, add it
+                for x in range(self.capacity / 2):
+                    if self._arr[hash - x].get_key() == None:
+                        #No element stored at this point, add it
+                        self._arr[hash - x] = entry
+                        self.size += 1
+                        self.collisions += 1
+        
+        #Check collisions and size to determine if resize required
+        if (self.collisions > 10) or (self.size > self.capacity / 2):
+            #Resize needs to happen
+            self.size += 1
+        
+        return None
+                
 
     def insert_kv(self, key: Any, value: Any) -> Any | None:
         """
@@ -53,7 +93,8 @@ class Map:
         Time complexity for full marks: O(1*)
         """
         #hint: entry = Entry(key, value)
-        pass
+        entry = Entry(key, value)
+        return self.insert(entry)
 
     def __setitem__(self, key: Any, value: Any) -> None:
         """
@@ -62,7 +103,9 @@ class Map:
         anything. Can be used like: my_map[some_key] = some_value
         Time complexity for full marks: O(1*)
         """
-        pass
+        entry = Entry(key, value)
+        self.insert(entry)
+        return
 
     def remove(self, key: Any) -> None:
         """
@@ -70,7 +113,21 @@ class Map:
         data structure. Don't return anything.
         Time complexity for full marks: O(1*)
         """
-        pass
+        entry = Entry(key, 0)
+        hash = entry.get_hash()
+        
+        if self._arr[hash].get_key() == key:
+            #Element stored at hash
+            self._arr[hash] = None
+            self.size -= 1
+        else:
+            #Element not stored at hash, check linear probe
+            for x in range(self.capacity / 2):
+                if self._arr[hash - x].get_key() == key:
+                    #Element stored at different value due to collision
+                    self.collisions -= 1
+                    self._arr[hash - x] = None
+        return
 
     def find(self, key: Any) -> Any | None:
         """
@@ -78,7 +135,19 @@ class Map:
         exists; return None otherwise.
         Time complexity for full marks: O(1*)
         """
-        pass
+        entry = Entry(key, 0)
+        hash = entry.get_hash()
+        
+        if self._arr[hash].get_key() == key:
+            #Element stored at hash
+            return self._arr[hash].get_value()
+        else:
+            #Element not stored at hash, check linear probe
+            for x in range(self.capacity // 2):
+                if self._arr[hash - x].get_key() == key:
+                    #Element stored at different value due to collision
+                   return self._arr[hash - x].get_value()
+        return None
 
     def __getitem__(self, key: Any) -> Any | None:
         """
@@ -86,16 +155,18 @@ class Map:
         for find()
         Time complexity for full marks: O(1*)
         """
-        pass
+        return self.find(key)
 
     def get_size(self) -> int:
         """
         Time complexity for full marks: O(1)
         """
-        pass
+        return self.size
 
     def is_empty(self) -> bool:
         """
         Time complexity for full marks: O(1)
         """
-        pass
+        if self.size == 0:
+            return True
+        return False

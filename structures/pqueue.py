@@ -168,18 +168,47 @@ class PriorityQueue:
         destroyed and will not be used again (hence returning the underlying
         array back to the caller).
         """
-        count = self.get_size()
-        new_list = DynamicArray()
+        count = self.get_size() - 1
         
-        for x in range(count):
-            smallestValue = self.get_min_value()
-            smallestKey = self.get_min_priority()
-            self.remove_min()
+        if self.is_empty():
+            return self._arr
+        
+        for x in range(self.get_size()):
+            #Swap to the back of heap but front of ordered numbers
+            #print(str(self._arr[0].get_key()))
+            self._arr[0], self._arr[count] = self._arr[count], self._arr[0]
+            #print(str(self._arr[0].get_key()))
+            ix = 0
+            smallest = ix
             
-            Small = Entry(smallestKey, smallestValue)
-            new_list.append(Small)
+            while ix < count:
+                left = ix * 2 + 1
+                right = ix * 2 + 2
+                
+                if left < count:
+                    #left child is in heap
+                    if right < count:
+                        #right child is in heap
+                        if self._arr[left].get_key() < self._arr[ix].get_key() and self._arr[left].get_key() <= self._arr[right].get_key():
+                            #Left child is smaller than parent and smaller than right child
+                            smallest = left
+                        elif self._arr[right].get_key() < self._arr[ix].get_key() and self._arr[left].get_key() > self._arr[right].get_key():
+                            #Right child is smaller than parent and smaller than left child
+                            smallest = right
+                    else:
+                        #Left child in heap, no right child
+                        if self._arr[left].get_key() < self._arr[ix].get_key():
+                            #Left child is only child and smaller than parent
+                            smallest = left
+                            
+                if smallest != ix:
+                    self._arr[ix], self._arr[smallest] = (self._arr[smallest], self._arr[ix])
+                    ix = smallest
+                else:
+                    break
+            #print(str(self.__str__()))
+            count -= 1 
         
-        self._arr = new_list
         return self._arr
     
     def down_heap(self, elem: int) -> None:
