@@ -76,6 +76,9 @@ def test_pqueue() -> None:
     for x in range(24):
         pq1.remove_min()
         print(pq1)
+        
+    for x in range(1000):
+        pq1.insert_fifo(x+3)
 
     """
     This one is up to you - we provided most of the code already :-)
