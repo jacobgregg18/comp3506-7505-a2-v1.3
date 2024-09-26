@@ -116,6 +116,9 @@ class Map:
         data structure. Don't return anything.
         Time complexity for full marks: O(1*)
         """
+        if key is None:
+            return None
+        
         entry = Entry(key, 0)
         prehash = entry.get_hash()
         hash = prehash % self._primes[self._primesize]
@@ -143,6 +146,9 @@ class Map:
         exists; return None otherwise.
         Time complexity for full marks: O(1*)
         """
+        if key is None:
+            return None
+        
         entry = Entry(key, 0)
         prehash = entry.get_hash()
         hash = prehash % self._primes[self._primesize]
