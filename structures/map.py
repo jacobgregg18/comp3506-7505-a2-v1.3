@@ -142,7 +142,8 @@ class Map:
         Time complexity for full marks: O(1*)
         """
         entry = Entry(key, 0)
-        hash = entry.get_hash()
+        prehash = entry.get_hash()
+        hash = prehash % self._primes[self._primesize]
         
         if self._arr[hash].get_key() == key:
             #Element stored at hash
