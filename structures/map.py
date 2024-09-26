@@ -64,7 +64,7 @@ class Map:
                 hash = 0
         
         #Value has not be placed
-        if self._arr[hash] == None:
+        if self._arr[hash] is None:
             #No element has been hashed yet
             self._arr[hash] = entry
             self.size += 1
