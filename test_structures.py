@@ -107,13 +107,15 @@ def test_map() -> None:
     e1 = Entry(1, "value_for_key_1")
     e2 = Entry(10, "value_for_key_10")
     my_map.insert(e1)
-    my_map.insert(e2)
+    print(my_map.insert(e2))
+    print(my_map.insert(e2))
     my_map.insert_kv(2, "Barry rules")
     my_map[3] = "value_for_key_3"
     assert my_map.get_size() == 4
     my_map.remove(10)
     my_map.remove(3)
     assert my_map.get_size() == 2
+    my_map.find(100)
 
     """
     OK, simple boring hand written tests don't really find bugs... Just

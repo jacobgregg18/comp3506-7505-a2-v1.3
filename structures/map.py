@@ -53,37 +53,36 @@ class Map:
         hash = prehash % self._primes[self._primesize]
         #print(hash)
         
+        for x in range(10):
+            if self._arr[hash + x] is not None:
+                if self._arr[hash + x].get_key() == entry.get_key():
+                    #replace old value and return
+                    retValue = self._arr[hash].get_value()
+                    self._arr[hash + x] = entry
+                    return retValue
+        
+        #Value has not be placed
         if self._arr[hash] == None:
             #No element has been hashed yet
             self._arr[hash] = entry
             self.size += 1
         else:
-            if self._arr[hash].get_key() == entry.get_key():
-                #This element is already stored in the array
-                retValue = self._arr[hash].get_value()
-                self._arr[hash] = entry
-                return retValue
-            else:
-                #Collision has occured, linear probe
-                for x in range(self.capacity / 2):
-                    if self._arr[hash - x].get_key() == entry.get_key():
-                        #This element is already stored in the array
-                        retValue = self._arr[hash - x].get_value()
-                        self._arr[hash - x] = entry
-                        return retValue
-                
-                #Value not already in linear probe, add it
-                for x in range(self.capacity / 2):
-                    if self._arr[hash - x].get_key() == None:
-                        #No element stored at this point, add it
-                        self._arr[hash - x] = entry
-                        self.size += 1
-                        self.collisions += 1
+            #Element hashed to index but different key
+            for x in range(10):
+                if self._arr[hash + x] is None:
+                    self._arr[hash] = entry
+                    self.size += 1
+                    self.collisions += 1
+                    break
+            #If reached this point, no spot available in probe, resize
+            self.resize_map()
+            self.insert(entry)
+            return None
         
         #Check collisions and size to determine if resize required
         if (self.collisions > 10) or (self.size > self.capacity / 2):
             #Resize needs to happen
-            self.size += 1
+            self.resize_map()
         
         return None
                 
@@ -122,17 +121,20 @@ class Map:
         hash = prehash % self._primes[self._primesize]
         #print(hash)
         
-        if self._arr[hash].get_key() == key:
-            #Element stored at hash
-            self._arr[hash] = None
-            self.size -= 1
-        else:
-            #Element not stored at hash, check linear probe
-            for x in range(self.capacity / 2):
-                if self._arr[hash - x].get_key() == key:
-                    #Element stored at different value due to collision
-                    self.collisions -= 1
-                    self._arr[hash - x] = None
+        if self._arr[hash] is not None:
+            #Element hash has value
+            if self._arr[hash].get_key() == key:
+                #Element stored at hash
+                self._arr[hash] = None
+                self.size -= 1
+            else:
+                #Element not stored at hash, check linear probe
+                for x in range(10):
+                    if self._arr[hash + x] is not None:
+                        if self._arr[hash + x].get_key() == key:
+                            #Element stored at different value due to collision
+                            self.collisions -= 1
+                            self._arr[hash + x] = None
         return
 
     def find(self, key: Any) -> Any | None:
@@ -145,15 +147,18 @@ class Map:
         prehash = entry.get_hash()
         hash = prehash % self._primes[self._primesize]
         
-        if self._arr[hash].get_key() == key:
-            #Element stored at hash
-            return self._arr[hash].get_value()
-        else:
-            #Element not stored at hash, check linear probe
-            for x in range(self.capacity // 2):
-                if self._arr[hash - x].get_key() == key:
-                    #Element stored at different value due to collision
-                   return self._arr[hash - x].get_value()
+        if self._arr[hash] is not None:
+            #Element hash has value
+            if self._arr[hash].get_key() == key:
+                #Element stored at hash
+                return self._arr[hash]
+            else:
+                #Element not stored at hash, check linear probe
+                for x in range(10):
+                    if self._arr[hash + x] is not None:
+                        if self._arr[hash + x].get_key() == key:
+                            #Element stored at different value due to collision
+                            return self._arr[hash + x]
         return None
 
     def __getitem__(self, key: Any) -> Any | None:
@@ -192,4 +197,3 @@ class Map:
         #New array contains all hashed functions
         self._arr = newArr
         return
-                
