@@ -37,7 +37,7 @@ class Map:
         self.size = 0
         self.collisions = 0
         self._arr = [None] * 769
-        self.capacity = 113
+        self.capacity = 769
         self._primes = [769, 1543, 6151, 49157, 786433, 3145739, 25165843]
         self._primesize = 0
         
@@ -60,6 +60,8 @@ class Map:
                     retValue = self._arr[hash + x].get_value()
                     self._arr[hash + x] = entry
                     return retValue
+            if (hash + x + 1) == self.capacity:
+                hash = 0
         
         #Value has not be placed
         if self._arr[hash] == None:
@@ -74,6 +76,8 @@ class Map:
                     self.size += 1
                     self.collisions += 1
                     break
+                if (hash + x + 1) == self.capacity:
+                    hash = 0
             #If reached this point, no spot available in probe, resize
             self.resize_map()
             self.insert(entry)
@@ -138,6 +142,8 @@ class Map:
                             #Element stored at different value due to collision
                             self.collisions -= 1
                             self._arr[hash + x] = None
+                    if (hash + x + 1) == self.capacity:
+                        hash = 0
         return
 
     def find(self, key: Any) -> Any | None:
@@ -165,6 +171,8 @@ class Map:
                         if self._arr[hash + x].get_key() == key:
                             #Element stored at different value due to collision
                             return self._arr[hash + x].get_value()
+                    if (hash + x + 1) == self.capacity:
+                        hash = 0
         return None
 
     def __getitem__(self, key: Any) -> Any | None:
@@ -194,9 +202,10 @@ class Map:
         self._primesize += 1
         newArr = [None] * self._primes[self._primesize]
         newSize = self._primes[self._primesize]
+        self.capacity = newSize
         
         for x in range(oldSize):
-            if self._arr[x] != None:
+            if self._arr[x] is not None:
                 new_ix = self._arr[x].get_key() % newSize
                 newArr[new_ix] = self._arr[x]
         
