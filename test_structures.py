@@ -111,6 +111,9 @@ def test_map() -> None:
     my_map.insert_kv(2, "Barry rules")
     my_map[3] = "value_for_key_3"
     assert my_map.get_size() == 4
+    my_map.remove(10)
+    my_map.remove(3)
+    assert my_map.get_size() == 2
 
     """
     OK, simple boring hand written tests don't really find bugs... Just

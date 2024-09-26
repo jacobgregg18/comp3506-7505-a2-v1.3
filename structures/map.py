@@ -36,8 +36,10 @@ class Map:
         """
         self.size = 0
         self.collisions = 0
-        self._arr = [None] * 113
+        self._arr = [None] * 769
         self.capacity = 113
+        self._primes = [769, 1543, 6151, 49157, 786433, 3145739, 25165843]
+        self._primesize = 0
         
 
     def insert(self, entry: Entry) -> Any | None:
@@ -47,7 +49,9 @@ class Map:
         None otherwise. (We will not use None as a key or a value in our tests).
         Time complexity for full marks: O(1*)
         """
-        hash = entry.get_hash()
+        prehash = entry.get_hash()
+        hash = prehash % self._primes[self._primesize]
+        #print(hash)
         
         if self._arr[hash] == None:
             #No element has been hashed yet
@@ -114,7 +118,9 @@ class Map:
         Time complexity for full marks: O(1*)
         """
         entry = Entry(key, 0)
-        hash = entry.get_hash()
+        prehash = entry.get_hash()
+        hash = prehash % self._primes[self._primesize]
+        #print(hash)
         
         if self._arr[hash].get_key() == key:
             #Element stored at hash
@@ -170,3 +176,19 @@ class Map:
         if self.size == 0:
             return True
         return False
+    
+    def resize_map(self) -> None:
+        oldSize = self._primes[self._primesize]
+        self._primesize += 1
+        newArr = [None] * self._primes[self._primesize]
+        newSize = self._primes[self._primesize]
+        
+        for x in range(oldSize):
+            if self._arr[x] != None:
+                new_ix = self._arr[x].get_key() % newSize
+                newArr[new_ix] = self._arr[x]
+        
+        #New array contains all hashed functions
+        self._arr = newArr
+        return
+                
