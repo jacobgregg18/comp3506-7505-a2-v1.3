@@ -57,7 +57,7 @@ class Map:
             if self._arr[hash + x] is not None:
                 if self._arr[hash + x].get_key() == entry.get_key():
                     #replace old value and return
-                    retValue = self._arr[hash].get_value()
+                    retValue = self._arr[hash + x].get_value()
                     self._arr[hash + x] = entry
                     return retValue
         
