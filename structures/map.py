@@ -204,6 +204,7 @@ class Map:
         newArr = [None] * self._primes[self._primesize]
         newSize = self._primes[self._primesize]
         self.capacity = newSize
+        self.collisions = 0
         
         for x in range(oldSize):
             if self._arr[x] is not None:
