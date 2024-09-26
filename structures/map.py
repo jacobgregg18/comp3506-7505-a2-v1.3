@@ -141,6 +141,7 @@ class Map:
                         if self._arr[hash + x].get_key() == key:
                             #Element stored at different value due to collision
                             self.collisions -= 1
+                            self.size -= 1
                             self._arr[hash + x] = None
                     if (hash + x + 1) == self.capacity:
                         hash = 0
