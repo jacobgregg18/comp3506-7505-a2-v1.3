@@ -151,14 +151,14 @@ class Map:
             #Element hash has value
             if self._arr[hash].get_key() == key:
                 #Element stored at hash
-                return self._arr[hash]
+                return self._arr[hash].get_value()
             else:
                 #Element not stored at hash, check linear probe
                 for x in range(10):
                     if self._arr[hash + x] is not None:
                         if self._arr[hash + x].get_key() == key:
                             #Element stored at different value due to collision
-                            return self._arr[hash + x]
+                            return self._arr[hash + x].get_value()
         return None
 
     def __getitem__(self, key: Any) -> Any | None:

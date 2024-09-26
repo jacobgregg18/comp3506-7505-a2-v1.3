@@ -115,7 +115,8 @@ def test_map() -> None:
     my_map.remove(10)
     my_map.remove(3)
     assert my_map.get_size() == 2
-    my_map.find(100)
+    print(my_map.find(2))
+    print(my_map.find(3))
 
     """
     OK, simple boring hand written tests don't really find bugs... Just
