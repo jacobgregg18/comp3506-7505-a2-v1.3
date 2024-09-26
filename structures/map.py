@@ -143,6 +143,7 @@ class Map:
                             self.collisions -= 1
                             self.size -= 1
                             self._arr[hash + x] = None
+                            break
                     if (hash + x + 1) == self.capacity:
                         hash = 0
         return

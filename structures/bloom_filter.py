@@ -6,6 +6,7 @@ Joel Mackenzie and Vladimir Morozov
 
 from typing import Any
 from structures.bit_vector import BitVector
+import structures.util
 import math
 
 class BloomFilter:
@@ -36,10 +37,13 @@ class BloomFilter:
         # You should use max_keys to decide how many bits your bitvector
         # should have, and allocate it accordingly.
         self._data = BitVector()
-        self._bits = (-max_keys * math.log(0.01)) / (math.log(2) * math.log(2))
+        self._bits = int((-max_keys * math.log(0.01)) / (math.log(2) * math.log(2))) + 1
         self._data.allocate(self._bits)
         self._contains = 0
-        self._hashes = (self._bits / max_keys) * math.log(2)
+        self._hashes = int((self._bits / max_keys) * math.log(2) + 1)
+        if self._hashes > 15:
+            self._hashes = 15
+        self._primes = [6151, 49157, 786433]
         
         # More variables here if you need, of course
     
@@ -91,7 +95,7 @@ class BloomFilter:
         Boolean helper to tell us if the structure is empty or not
         Time complexity for full marks: O(1)
         """
-        if self._contains != 0:
+        if self._contains == 0:
             return True
         return False
 
@@ -104,5 +108,25 @@ class BloomFilter:
         return self._bits
     
     def hash(self, value: Any, hash_number: int) -> int:
-        return 1
-
+        bytes = structures.util.object_to_byte_array(value)
+        bits = int.from_bytes(bytes, "big")
+        
+        hash_type = hash_number % 3
+        compression_number = hash_number // 3
+        
+        if hash_type == 1:
+            return self.hash_one(bits) % self._primes[compression_number]
+        elif hash_type == 2:
+            return self.hash_two(bits) % self._primes[compression_number]
+        else:
+            return self.hash_three(bits) % self._primes[compression_number]
+            
+    
+    def hash_one(self, value: int) -> int:
+        return (3079 * value + 98317) % 50331653
+    
+    def hash_two(self, value: int) -> int:
+        return (1543 * value + 24593) % 25165843
+    
+    def hash_three(self, value: int) -> int:
+        return (769 * value + 49157) % 3145739
