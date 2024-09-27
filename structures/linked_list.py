@@ -288,3 +288,4 @@ class DoublyLinkedList:
                 return retValue
             cur = cur.get_next()
         return None
+        

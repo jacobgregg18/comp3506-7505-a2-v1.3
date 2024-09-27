@@ -261,7 +261,7 @@ class Map:
             if self._arr[x] is not None:
                 listsize = self._arr[x].get_size()
                 for y in range(listsize):
-                    entry = self._arr[x].remove_and_return()
+                    entry = self._arr[x].remove_from_front()
                     new_ix = entry.get_key() % newSize
                     #newArr[new_ix] = self._arr[x]
                     if newArr[new_ix] is not None:
