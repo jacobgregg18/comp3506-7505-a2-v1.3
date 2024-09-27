@@ -73,7 +73,7 @@ class Map:
             #print("Here 2")
             
          #Check collisions and size to determine if resize required
-        if (self.collisions > 10) or (self.size > self.capacity * 0.8):
+        if (self.collisions > self.capacity * 0.25) or (self.size > self.capacity * 0.8):
             #Resize needs to happen
             self.resize_map()
         
