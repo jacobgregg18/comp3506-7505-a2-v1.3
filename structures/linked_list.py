@@ -263,7 +263,7 @@ class DoublyLinkedList:
             self.remove_from_back()
         return True
 
-    def find_and_return_entry(self, elem: Any) -> Any | None:
+    def find_and_return_entry(self, elem: Any) -> Entry | None:
         """
         Looks at the data inside each node of the list and returns the
         node data if it matches the input elem; returns None otherwise
