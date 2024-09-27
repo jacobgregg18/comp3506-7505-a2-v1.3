@@ -271,7 +271,7 @@ class DoublyLinkedList:
         cur = self._head
         while cur is not None:
             if cur.get_key(cur.get_data()) == elem:
-                return cur.get_value(cur.get_data())
+                return cur.get_data()
             cur = cur.get_next()
         return None
     

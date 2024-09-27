@@ -206,6 +206,8 @@ class Map:
         if self._arr[hash] is not None:
             #Element hash has value
             value = self._arr[hash].find_and_return_entry(key)
+            if value is not None:
+                return value.get_value()
             return value
         return None
         
