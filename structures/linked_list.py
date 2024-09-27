@@ -8,6 +8,7 @@ Joel Mackenzie and Vladimir Morozov
 from __future__ import annotations
 from collections.abc import Iterator
 from typing import Any
+from structures.entry import Entry
 
 
 class DLLNode:
@@ -42,6 +43,15 @@ class DLLNode:
 
     def get_prev(self) -> DLLNode | None:
         return self._prev
+    
+    def get_key(self, entry: Entry) -> Any:
+        return entry.get_key()
+    
+    def get_value(self, entry: Entry) -> Any:
+        return entry.get_value()
+
+    def set_value(self, entry: Entry, new_value: Any) -> Any:
+        return entry.update_value(new_value)
 
 
 class DoublyLinkedList:
@@ -223,7 +233,7 @@ class DoublyLinkedList:
         # 1. Search and get a reference on the first match
         cur = self._head
         while cur is not None:
-            if cur.get_data() == elem:
+            if cur.get_key(cur.get_data()) == elem:
                 break
             cur = cur.get_next()
         # Not found - easy peasy
@@ -253,3 +263,28 @@ class DoublyLinkedList:
             self.remove_from_back()
         return True
 
+    def find_and_return_entry(self, elem: Any) -> Any | None:
+        """
+        Looks at the data inside each node of the list and returns the
+        node data if it matches the input elem; returns None otherwise
+        """
+        cur = self._head
+        while cur is not None:
+            if cur.get_key(cur.get_data()) == elem:
+                return cur.get_value(cur.get_data())
+            cur = cur.get_next()
+        return None
+    
+    def find_and_update_entry(self, elem: Entry) -> Any | None:
+        """
+        Looks at the data inside each node of the list and returns the
+        node data if it matches the input elem; returns None otherwise
+        """
+        cur = self._head
+        while cur is not None:
+            if cur.get_key(cur.get_data()) == elem.get_key():
+                retValue = cur.get_value(cur.get_data())
+                cur.set_value(cur.get_data(), elem.get_value)
+                return retValue
+            cur = cur.get_next()
+        return None

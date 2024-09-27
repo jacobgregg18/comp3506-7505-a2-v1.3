@@ -109,9 +109,11 @@ def test_map() -> None:
     my_map.insert(e1)
     print(my_map.insert(e2))
     print(my_map.insert(e2))
-    my_map.insert_kv(2, "Barry rules")
+    print(my_map.insert_kv(2, "Barry rules"))
     my_map[3] = "value_for_key_3"
+    print("Size is " + str(my_map.get_size()))
     assert my_map.get_size() == 4
+    print("insert works")
     my_map.remove(10)
     my_map.remove(3)
     assert my_map.get_size() == 2
