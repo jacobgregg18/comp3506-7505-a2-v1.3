@@ -52,11 +52,12 @@ class Map:
         """
         prehash = entry.get_hash()
         hash = prehash % self._primes[self._primesize]
-        print(hash)
+        #print(hash)
         
         if self._arr[hash] is not None:
             #Elements have been added before
             retValue = self._arr[hash].find_and_update_entry(entry)
+            #print("Repeat")
             if retValue is None:
                 #Specific key is not in chain yet, add it
                 self._arr[hash].insert_to_back(entry)

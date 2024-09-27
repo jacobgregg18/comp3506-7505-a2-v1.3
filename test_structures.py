@@ -102,17 +102,14 @@ def test_map() -> None:
     random.seed(1337)
     print("==== Executing Map Tests ====")
     my_map = Map()
-
-    # Make some entries
-    my_map.__setitem__(100, True)
-    print(my_map.find(100))
-    
-    
-    
+    my_map.remove(10)
+    # Make some entries    
     e1 = Entry(1, "value_for_key_1")
     e2 = Entry(10, "value_for_key_10")
+    e3 = Entry(10, "vvvv")
     my_map.insert(e1)
     print(my_map.insert(e2))
+    print(my_map.insert(e3))
     print(my_map.insert(e2))
     print(my_map.insert_kv(True, "Barry rules"))
     print(my_map.insert_kv("Hello", "rules"))
@@ -128,9 +125,9 @@ def test_map() -> None:
     #assert my_map.get_size() == 2
     print(my_map.find(True))
     print(my_map.find(3))
-    print(my_map.find("Yolo"))
-    print(my_map.find("Hello"))
-    print(my_map.find(10))
+    print(my_map.__getitem__("Yolo"))
+    print(my_map.__getitem__("Hello"))
+    print(my_map.__getitem__(10))
 
     """
     OK, simple boring hand written tests don't really find bugs... Just

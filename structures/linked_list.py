@@ -284,7 +284,7 @@ class DoublyLinkedList:
         while cur is not None:
             if cur.get_key(cur.get_data()) == elem.get_key():
                 retValue = cur.get_value(cur.get_data())
-                cur.set_value(cur.get_data(), elem.get_value)
+                cur.set_value(cur.get_data(), elem.get_value())
                 return retValue
             cur = cur.get_next()
         return None
