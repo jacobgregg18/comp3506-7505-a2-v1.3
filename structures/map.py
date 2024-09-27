@@ -174,8 +174,8 @@ class Map:
     def resize_map(self) -> None:
         oldSize = self._primes[self._primesize]
         self._primesize += 1
-        newArr = [None] * self._primes[self._primesize]
         newSize = self._primes[self._primesize]
+        newArr = [None] * newSize
         self.capacity = newSize
         self.collisions = 0
         
@@ -184,20 +184,20 @@ class Map:
                 listsize = self._arr[x].get_size()
                 for y in range(listsize):
                     entry = self._arr[x].remove_from_front()
-                    new_ix = entry.get_key() % newSize
+                    new_ix = entry.get_hash() % newSize
                     #newArr[new_ix] = self._arr[x]
                     if newArr[new_ix] is not None:
                         #Elements have been added before
                         retValue = newArr[new_ix].find_and_update_entry(entry)
                         if retValue is None:
                             #Specific key is not in chain yet, add it
-                            self._arr[new_ix].insert_to_back(entry)
+                            newArr[new_ix].insert_to_back(entry)
                             self.collisions += 1
                     else:
                         #No element in this hash, create list
                         list = DoublyLinkedList()
                         list.insert_to_front(entry)
-                        self._arr[new_ix] = list
+                        newArr[new_ix] = list
         
         #New array contains all hashed functions
         self._arr = newArr

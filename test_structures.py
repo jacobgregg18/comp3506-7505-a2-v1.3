@@ -130,6 +130,7 @@ def test_map() -> None:
     print(my_map.find(3))
     print(my_map.find("Yolo"))
     print(my_map.find("Hello"))
+    print(my_map.find(10))
 
     """
     OK, simple boring hand written tests don't really find bugs... Just
