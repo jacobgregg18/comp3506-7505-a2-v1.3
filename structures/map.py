@@ -72,50 +72,11 @@ class Map:
             #print("Here 2")
             
          #Check collisions and size to determine if resize required
-        if (self.collisions > 10) or (self.size > self.capacity / 2):
+        if (self.collisions > 10) or (self.size > self.capacity * 0.8):
             #Resize needs to happen
             self.resize_map()
         
         return retValue
-        
-        """
-        for x in range(10):
-            if self._arr[hash + x] is not None:
-                if self._arr[hash + x].get_key() == entry.get_key():
-                    #replace old value and return
-                    retValue = self._arr[hash + x].get_value()
-                    self._arr[hash + x] = entry
-                    return retValue
-            if (hash + x + 1) == self.capacity:
-                hash = 0
-        
-        #Value has not be placed
-        if self._arr[hash] is None:
-            #No element has been hashed yet
-            self._arr[hash] = entry
-            self.size += 1
-        else:
-            #Element hashed to index but different key
-            for x in range(10):
-                if self._arr[hash + x] is None:
-                    self._arr[hash] = entry
-                    self.size += 1
-                    self.collisions += 1
-                    break
-                if (hash + x + 1) == self.capacity:
-                    hash = 0
-            #If reached this point, no spot available in probe, resize
-            self.resize_map()
-            self.insert(entry)
-            return None
-        
-        #Check collisions and size to determine if resize required
-        if (self.collisions > 10) or (self.size > self.capacity / 2):
-            #Resize needs to happen
-            self.resize_map()
-        
-        return None
-        """
                 
 
     def insert_kv(self, key: Any, value: Any) -> Any | None:
@@ -166,29 +127,6 @@ class Map:
                     self.collisions -= 1
         
         return
-        
-        """
-        
-        if self._arr[hash] is not None:
-            #Element hash has value
-            if self._arr[hash].get_key() == key:
-                #Element stored at hash
-                self._arr[hash] = None
-                self.size -= 1
-            else:
-                #Element not stored at hash, check linear probe
-                for x in range(10):
-                    if self._arr[hash + x] is not None:
-                        if self._arr[hash + x].get_key() == key:
-                            #Element stored at different value due to collision
-                            self.collisions -= 1
-                            self.size -= 1
-                            self._arr[hash + x] = None
-                            break
-                    if (hash + x + 1) == self.capacity:
-                        hash = 0
-        return
-        """
 
     def find(self, key: Any) -> Any | None:
         """
@@ -210,24 +148,6 @@ class Map:
                 return value.get_value()
             return value
         return None
-        
-        """
-        if self._arr[hash] is not None:
-            #Element hash has value
-            if self._arr[hash].get_key() == key:
-                #Element stored at hash
-                return self._arr[hash].get_value()
-            else:
-                #Element not stored at hash, check linear probe
-                for x in range(10):
-                    if self._arr[hash + x] is not None:
-                        if self._arr[hash + x].get_key() == key:
-                            #Element stored at different value due to collision
-                            return self._arr[hash + x].get_value()
-                    if (hash + x + 1) == self.capacity:
-                        hash = 0
-        return None
-        """
 
     def __getitem__(self, key: Any) -> Any | None:
         """
