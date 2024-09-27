@@ -119,7 +119,7 @@ class Map:
         if self._arr[hash] is not None:
             #Data is inside the hash index
             value = self._arr[hash].find_and_remove_element(key)
-            if value is not None:
+            if value is not False:
                 #Element was in list and removed
                 self.size -= 1
                 if self._arr[hash].get_size() != 0:
@@ -133,20 +133,17 @@ class Map:
         Find and return the value v corresponding to key k if it
         exists; return None otherwise.
         Time complexity for full marks: O(1*)
-        """
-        if key is None:
-            return None
-        
+        """        
         entry = Entry(key, 0)
         prehash = entry.get_hash()
         hash = prehash % self._primes[self._primesize]
         
         if self._arr[hash] is not None:
             #Element hash has value
-            value = self._arr[hash].find_and_return_entry(key)
-            if value is not None:
-                return value.get_value()
-            return value
+            entry = self._arr[hash].find_and_return_entry(key)
+            if entry is not None:
+                return entry.get_value()
+            return None
         return None
 
     def __getitem__(self, key: Any) -> Any | None:
