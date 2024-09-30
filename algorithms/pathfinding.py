@@ -42,42 +42,46 @@ def bfs_traversal(
     # ALGO GOES HERE
     duplicate = False
     queue = PriorityQueue()
-    queue.insert_fifo(graph.get_node(origin))
+    queue.insert_fifo(origin)
     pathMap = Map()
+    goal_reached = 0
     
     while queue.get_size() > 0:
         nodes = graph.get_neighbours(origin)
         for y in nodes:
-            if y(1) == goal:
+            if y.get_id() == goal:
                 #Target reached, append then break
-                visited_order.append(y)
-                pathMap.insert_kv(y(0), origin(0))
+                visited_order.append(y.get_id())
+                pathMap.insert_kv(y.get_id(), origin)
+                goal_reached = 1
                 break
             
             #Not the target, enqueue and add to visited order if not repeated
-            for x in visited_order:
-                if x == y(0):
+            for x in range(visited_order.get_size()):
+                if visited_order.get_at(x) == y.get_id():
                     #Duplicate node, do not revist
                     duplicate = True
         
             if duplicate is False:
                 #Enqueue only if firt time visited
-                queue.insert_fifo(y)
-                pathMap.insert_kv(y(0), origin(0))
-                visited_order.append(y(0))
+                queue.insert_fifo(y.get_id())
+                pathMap.insert_kv(y.get_id(), origin)
+                visited_order.append(y.get_id())
                 duplicate = False
       
         origin = queue.remove_min()
 
-    #Create the path by travesing the map of nodes visited
-    while goal != origin:
-        reversedPath.append(goal)
-        goal = pathMap.find(goal)
+    #Create the path by travesing the map of nodes visited, if goal was reached
+    if goal_reached == 1:
+        while goal != origin:
+            reversedPath.append(goal)
+            goal = pathMap.find(goal)
         
-    reversedPath.append(goal)
-    
-    for x in range(reversedPath.get_size()):
-        path.append(reversedPath.get_at(reversedPath.get_size() - x - 1))
+        #Add the origin at the end  
+        reversedPath.append(origin)
+        
+        for x in range(reversedPath.get_size()):
+            path.append(reversedPath.get_at(reversedPath.get_size() - x - 1))
     
     # Return the path and the visited nodes list
     return (path, visited_order)
