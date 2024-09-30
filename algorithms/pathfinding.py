@@ -36,9 +36,49 @@ def bfs_traversal(
     visited_order = DynamicArray()
     # Stores the path from the origin to the goal
     path = DynamicArray()
+    reversedPath = DynamicArray()
+    
 
     # ALGO GOES HERE
+    duplicate = False
+    queue = PriorityQueue()
+    queue.insert_fifo(graph.get_node(origin))
+    pathMap = Map()
+    
+    while queue.get_size() > 0:
+        nodes = graph.get_neighbours(origin)
+        for y in nodes:
+            if y(1) == goal:
+                #Target reached, append then break
+                visited_order.append(y)
+                pathMap.insert_kv(y(0), origin(0))
+                break
+            
+            #Not the target, enqueue and add to visited order if not repeated
+            for x in visited_order:
+                if x == y(0):
+                    #Duplicate node, do not revist
+                    duplicate = True
+        
+            if duplicate is False:
+                #Enqueue only if firt time visited
+                queue.insert_fifo(y)
+                pathMap.insert_kv(y(0), origin(0))
+                visited_order.append(y(0))
+                duplicate = False
+      
+        origin = queue.remove_min()
 
+    #Create the path by travesing the map of nodes visited
+    while goal != origin:
+        reversedPath.append(goal)
+        goal = pathMap.find(goal)
+        
+    reversedPath.append(goal)
+    
+    for x in range(reversedPath.get_size()):
+        path.append(reversedPath.get_at(reversedPath.get_size() - x - 1))
+    
     # Return the path and the visited nodes list
     return (path, visited_order)
 
