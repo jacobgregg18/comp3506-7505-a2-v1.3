@@ -44,24 +44,25 @@ def bfs_traversal(
     queue.insert_fifo(origin)
     visited_order.append(origin)
     pathMap = Map()
+    pathMap.insert_kv(origin, origin)
     goal_reached = 0
 
     while queue.get_size() > 0:
-        nodes = graph.get_neighbours(origin)
+        currentNode = queue.remove_min()
+        nodes = graph.get_neighbours(currentNode)
         for y in nodes:
             if y.get_id() == goal:
                 # Target reached, append then break
                 visited_order.append(y.get_id())
-                pathMap.insert_kv(y.get_id(), origin)
+                pathMap.insert_kv(y.get_id(), currentNode)
                 goal_reached = 1
                 break
 
             # Not the target, enqueue and add to visited order if not repeated
             if pathMap.find(y.get_id()) is None:
                 queue.insert_fifo(y.get_id())
-                pathMap.insert_kv(y.get_id(), origin)
-                visited_order.append(y.get_id()) 
-        origin = queue.remove_min()
+                pathMap.insert_kv(y.get_id(), currentNode)
+                visited_order.append(y.get_id())
 
     # Create the path by travesing the map of nodes visited, if goal was reached
     if goal_reached == 1:
