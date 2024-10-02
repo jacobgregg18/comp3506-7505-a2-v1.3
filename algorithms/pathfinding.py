@@ -58,6 +58,7 @@ def bfs_traversal(
         for y in nodes:
             if y.get_id() == goal:
                 # Target reached, append then break
+                visited_order.append(y.get_id())
                 pathMap.insert_kv(y.get_id(), currentNode)
                 goal_reached = 1
                 break
