@@ -9,6 +9,7 @@ from structures.bit_vector import BitVector
 import structures.util
 import math
 
+
 class BloomFilter:
     """
     A BloomFilter uses a BitVector as a container. To insert a given key, we
@@ -44,7 +45,7 @@ class BloomFilter:
         if self._hashes > 15:
             self._hashes = 15
         self._primes = [6151, 49157, 786433]
-        
+
         # More variables here if you need, of course
     
     def __str__(self) -> str:
@@ -64,7 +65,7 @@ class BloomFilter:
         Time complexity for full marks: O(1)
         """
         self._contains += 1
-        
+
         for x in range(self._hashes):
             hash1 = self.hash(key, x + 1)
             self._data.set_at(hash1)
@@ -78,7 +79,7 @@ class BloomFilter:
         for x in range(self._hashes):
             hash = self.hash(key, x + 1)
             if self._data.get_at(hash) == 0:
-                #Number not set, number not in set
+                # Number not set, number not in set
                 return False
         return True
 
@@ -106,27 +107,26 @@ class BloomFilter:
         Time complexity for full marks: O(1)
         """
         return self._bits
-    
+
     def hash(self, value: Any, hash_number: int) -> int:
         bytes = structures.util.object_to_byte_array(value)
         bits = int.from_bytes(bytes, "big")
-        
+
         hash_type = hash_number % 3
         compression_number = hash_number // 3
-        
+
         if hash_type == 1:
             return self.hash_one(bits) % self._primes[compression_number]
         elif hash_type == 2:
             return self.hash_two(bits) % self._primes[compression_number]
         else:
-            return self.hash_three(bits) % self._primes[compression_number]
-            
+            return self.hash_three(bits) % self._primes[compression_number]  
     
     def hash_one(self, value: int) -> int:
         return (3079 * value + 98317) % 50331653
-    
+
     def hash_two(self, value: int) -> int:
         return (1543 * value + 24593) % 25165843
-    
+
     def hash_three(self, value: int) -> int:
         return (769 * value + 49157) % 3145739

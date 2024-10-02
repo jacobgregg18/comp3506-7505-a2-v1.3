@@ -14,6 +14,7 @@ from structures.pqueue import PriorityQueue
 from structures.bloom_filter import BloomFilter
 from structures.util import Hashable
 
+
 def bfs_traversal(
     graph: Graph | LatticeGraph, origin: int, goal: int
     ) -> tuple[DynamicArray, DynamicArray]:
@@ -37,53 +38,44 @@ def bfs_traversal(
     # Stores the path from the origin to the goal
     path = DynamicArray()
     reversedPath = DynamicArray()
-    
 
     # ALGO GOES HERE
-    duplicate = False
     queue = PriorityQueue()
     queue.insert_fifo(origin)
     visited_order.append(origin)
     pathMap = Map()
     goal_reached = 0
-    
+
     while queue.get_size() > 0:
         nodes = graph.get_neighbours(origin)
         for y in nodes:
             if y.get_id() == goal:
-                #Target reached, append then break
+                # Target reached, append then break
                 visited_order.append(y.get_id())
                 pathMap.insert_kv(y.get_id(), origin)
                 goal_reached = 1
                 break
-            
-            #Not the target, enqueue and add to visited order if not repeated
-            for x in range(visited_order.get_size()):
-                if visited_order.get_at(x) == y.get_id():
-                    #Duplicate node, do not revist
-                    duplicate = True
-        
-            if duplicate is False:
-                #Enqueue only if firt time visited
+
+            # Not the target, enqueue and add to visited order if not repeated
+            if pathMap.find(y.get_id() == None):
                 queue.insert_fifo(y.get_id())
                 pathMap.insert_kv(y.get_id(), origin)
                 visited_order.append(y.get_id())
-                duplicate = False
-      
+
         origin = queue.remove_min()
 
-    #Create the path by travesing the map of nodes visited, if goal was reached
+    # Create the path by travesing the map of nodes visited, if goal was reached
     if goal_reached == 1:
         while goal != origin:
             reversedPath.append(goal)
             goal = pathMap.find(goal)
-        
+
         #Add the origin at the end  
         reversedPath.append(origin)
-        
+
         for x in range(reversedPath.get_size()):
             path.append(reversedPath.get_at(reversedPath.get_size() - x - 1))
-    
+
     # Return the path and the visited nodes list
     return (path, visited_order)
 
