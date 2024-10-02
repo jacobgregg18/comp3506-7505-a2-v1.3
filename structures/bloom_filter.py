@@ -122,10 +122,10 @@ class BloomFilter:
             return self.hash_three(bits) % self._primes[compression_number]
 
     def hash_one(self, value: int) -> int:
-        return (3079 * value + 98317) % 50331653
+        return (193 * value + 1543) % 1572869
 
     def hash_two(self, value: int) -> int:
-        return (1543 * value + 24593) % 25165843
+        return (389 * value + 3079) % 6291469
 
     def hash_three(self, value: int) -> int:
-        return (769 * value + 49157) % 3145739
+        return (769 * value + 6151) % 3145739
