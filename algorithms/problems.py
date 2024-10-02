@@ -145,18 +145,25 @@ def chain_reaction(compounds: list[Compound]) -> int:
 
     Limitations:
         "It works":
-            @compounds@ has up to 100 elements
+            @compounds@ has up to 10 elements
 
         "Exhaustive":
-            @compounds@ has up to 1000 elements
+            @compounds@ has up to 50 elements
 
         "Welcome to COMP3506":
-            @compounds@ has up to 10'000 elements
+            @compounds@ has up to 100 elements
 
     """
     maximal_compound = -1
     
     # DO THE THING
+    
+    reactions = DynamicArray()
+    
+    for x in range(len(compounds)):
+        
+        for y in range(len(compounds)):
+            yo = x + y
 
     return maximal_compound
 
@@ -199,7 +206,30 @@ def labyrinth(offers: list[Offer]) -> tuple[int, int]:
     best_offer_cost = float('inf')
 
     # DO THE THING
-
+    
+    for x in offers:
+        if x.get_num_edges() > (x.get_num_nodes() * (x.get_num_nodes() - 1) / 2):
+            #Not a sigmple graph (has over maximum edges)
+            continue
+        if x.get_num_edges() < x.get_num_nodes() - 1:
+            #Not a connected graph (Less edges then nodes)
+            continue
+        if x.get_k() == 1:
+            if x.get_num_edges() < (x.get_num_nodes() * (x.get_num_nodes() - 1) / 2):
+                #Not all nodes connected via single edge
+                continue
+        if x.get_k() < 1 or x.get_num_nodes() < 1 or x.get_num_edges() < 0:
+            #Not valid inputs
+            continue
+        if x.get_cost() < best_offer_cost:
+            best_offer_cost = x.get_cost()
+            best_offer_id = x.get_offer_id()
+            continue
+        if x.get_cost() == best_offer_cost:
+            if x.get_offer_id() < best_offer_id:
+                best_offer_cost = x.get_cost()
+                best_offer_id = x.get_offer_id()
+            
     return (best_offer_id, best_offer_cost)
 
 

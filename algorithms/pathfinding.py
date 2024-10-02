@@ -43,6 +43,7 @@ def bfs_traversal(
     duplicate = False
     queue = PriorityQueue()
     queue.insert_fifo(origin)
+    visited_order.append(origin)
     pathMap = Map()
     goal_reached = 0
     
