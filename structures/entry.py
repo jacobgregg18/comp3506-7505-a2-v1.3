@@ -74,7 +74,7 @@ class Entry(Hashable):
         bits = int.from_bytes(bytes, "big")
         
         #hashed_int = bits
-        hashed_int = (3079 * bits + 98317) % 50331653
+        hashed_int = (389 * bits + 1543) % 25165843
         
         return hashed_int
 

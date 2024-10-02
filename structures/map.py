@@ -40,7 +40,7 @@ class Map:
         self.collisions = 0
         self._arr = [None] * 769
         self.capacity = 769
-        self._primes = [769, 1543, 6151, 49157, 786433, 3145739, 25165843]
+        self._primes = [769, 1543, 6151, 49157, 786433, 3145739, 12582917]
         self._primesize = 0
         
 
@@ -192,6 +192,6 @@ class Map:
                         list.insert_to_front(entry)
                         newArr[new_ix] = list
 
-        #New array contains all hashed functions
+        # New array contains all hashed functions
         self._arr = newArr
         return

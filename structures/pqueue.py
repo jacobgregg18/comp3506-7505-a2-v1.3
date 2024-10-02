@@ -27,7 +27,7 @@ class PriorityQueue:
         """
         self._arr = DynamicArray()
         self._max_priority = 0
-    
+
     def __str__(self) -> str:
         string_rep = "["
         for elem in range(self.get_size()):
@@ -96,33 +96,33 @@ class PriorityQueue:
 
         ix = 0
         smallest = ix
-        
+
         while ix < self.get_size():
             left = ix * 2 + 1
             right = ix * 2 + 2
-            
+
             if left < self.get_size():
-                #left child is in heap
+                # left child is in heap
                 if right < self.get_size():
-                    #right child is in heap
+                    # right child is in heap
                     if self._arr[left].get_key() < self._arr[ix].get_key() and self._arr[left].get_key() <= self._arr[right].get_key():
-                        #Left child is smaller than parent and smaller than right child
+                        # Left child is smaller than parent and smaller than right child
                         smallest = left
                     elif self._arr[right].get_key() < self._arr[ix].get_key() and self._arr[left].get_key() > self._arr[right].get_key():
-                        #Right child is smaller than parent and smaller than left child
+                        # Right child is smaller than parent and smaller than left child
                         smallest = right
                 else:
-                    #Left child in heap, no right child
+                    # Left child in heap, no right child
                     if self._arr[left].get_key() < self._arr[ix].get_key():
-                        #Left child is only child and smaller than parent
+                        # Left child is only child and smaller than parent
                         smallest = left
-                        
+
             if smallest != ix:
                 self._arr[ix], self._arr[smallest] = (self._arr[smallest], self._arr[ix])
                 ix = smallest
             else:
                 break
-        
+
         return result.get_value()
 
     def get_size(self) -> int:
@@ -148,14 +148,13 @@ class PriorityQueue:
         self._arr = input_list
         elem = self.get_size() - 1
         
-        #Loop through from bottom right to top
-        #Simulates bottom up construction with continous downheaps per node
+        # Loop through from bottom right to top
+        # Simulates bottom up construction with continous downheaps per node
         while elem >= 0:
             self.down_heap(elem)
             elem -= 1
-        
+
         return
-                
 
     def sort(self) -> DynamicArray:
         """
@@ -169,75 +168,71 @@ class PriorityQueue:
         array back to the caller).
         """
         count = self.get_size() - 1
-        
+
         if self.is_empty():
             return self._arr
-        
+
         for x in range(self.get_size()):
-            #Swap to the back of heap but front of ordered numbers
-            #print(str(self._arr[0].get_key()))
+            # Swap to the back of heap but front of ordered numbers
             self._arr[0], self._arr[count] = self._arr[count], self._arr[0]
-            #print(str(self._arr[0].get_key()))
             ix = 0
             smallest = ix
-            
+
             while ix < count:
                 left = ix * 2 + 1
                 right = ix * 2 + 2
-                
+
                 if left < count:
-                    #left child is in heap
+                    # left child is in heap
                     if right < count:
-                        #right child is in heap
+                        # right child is in heap
                         if self._arr[left].get_key() < self._arr[ix].get_key() and self._arr[left].get_key() <= self._arr[right].get_key():
-                            #Left child is smaller than parent and smaller than right child
+                            # Left child is smaller than parent and smaller than right child
                             smallest = left
                         elif self._arr[right].get_key() < self._arr[ix].get_key() and self._arr[left].get_key() > self._arr[right].get_key():
-                            #Right child is smaller than parent and smaller than left child
+                            # Right child is smaller than parent and smaller than left child
                             smallest = right
                     else:
-                        #Left child in heap, no right child
+                        # Left child in heap, no right child
                         if self._arr[left].get_key() < self._arr[ix].get_key():
-                            #Left child is only child and smaller than parent
-                            smallest = left
-                            
+                            # Left child is only child and smaller than parent
+                            smallest = left    
                 if smallest != ix:
                     self._arr[ix], self._arr[smallest] = (self._arr[smallest], self._arr[ix])
                     ix = smallest
                 else:
                     break
-            #print(str(self.__str__()))
             count -= 1 
-        
+
         return self._arr
-    
+
     def down_heap(self, elem: int) -> None:
         size = self.get_size()
         smallest = elem
-        
+
         while elem < size:
             left = elem * 2 + 1
             right = elem * 2 + 2
-            
+
             if left < size:
-                #left child is in heap
+                # left child is in heap
                 if right < size:
-                    #right child is in heap
+                    # right child is in heap
                     if self._arr[left].get_key() < self._arr[elem].get_key() and self._arr[left].get_key() <= self._arr[right].get_key():
-                        #Left child is smaller than parent and smaller than right child
+                        # Left child is smaller than parent and smaller than right child
                         smallest = left
                     elif self._arr[right].get_key() < self._arr[elem].get_key() and self._arr[left].get_key() > self._arr[right].get_key():
-                        #Right child is smaller than parent and smaller than left child
+                        # Right child is smaller than parent and smaller than left child
                         smallest = right
                 else:
                     if self._arr[left].get_key() < self._arr[elem].get_key():
-                        #Left child is only child and smaller than parent
+                        # Left child is only child and smaller than parent
                         smallest = left
-              
+
             if smallest != elem:
                 self._arr[elem], self._arr[smallest] = (self._arr[smallest], self._arr[elem])
                 elem = smallest
             else:
                 break
-        
+
         return
