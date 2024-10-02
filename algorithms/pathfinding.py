@@ -57,11 +57,10 @@ def bfs_traversal(
                 break
 
             # Not the target, enqueue and add to visited order if not repeated
-            if pathMap.find(y.get_id() == None):
+            if pathMap.find(y.get_id()) is None:
                 queue.insert_fifo(y.get_id())
                 pathMap.insert_kv(y.get_id(), origin)
-                visited_order.append(y.get_id())
-
+                visited_order.append(y.get_id()) 
         origin = queue.remove_min()
 
     # Create the path by travesing the map of nodes visited, if goal was reached
@@ -70,7 +69,7 @@ def bfs_traversal(
             reversedPath.append(goal)
             goal = pathMap.find(goal)
 
-        #Add the origin at the end  
+        # Add the origin at the end  
         reversedPath.append(origin)
 
         for x in range(reversedPath.get_size()):

@@ -45,9 +45,8 @@ class BloomFilter:
         if self._hashes > 15:
             self._hashes = 15
         self._primes = [6151, 49157, 786433]
-
         # More variables here if you need, of course
-    
+
     def __str__(self) -> str:
         """
         A helper that allows you to print a BloomFilter type

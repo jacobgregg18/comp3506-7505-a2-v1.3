@@ -23,6 +23,7 @@ from structures.entry import Entry
 from structures.dynamic_array import DynamicArray
 from structures.linked_list import DoublyLinkedList
 
+
 class Map:
     """
     An implementation of the Map ADT.
@@ -52,33 +53,30 @@ class Map:
         """
         prehash = entry.get_hash()
         hash = prehash % self._primes[self._primesize]
-        #print(hash)
-        
+
         if self._arr[hash] is not None:
-            #Elements have been added before
+            # Elements have been added before
             retValue = self._arr[hash].find_and_update_entry(entry)
-            #print("Repeat")
+            # print("Repeat")
             if retValue is None:
-                #Specific key is not in chain yet, add it
+                # Specific key is not in chain yet, add it
                 self._arr[hash].insert_to_back(entry)
                 self.collisions += 1
                 self.size += 1
         else:
-            #No element in this hash, create list
+            # No element in this hash, create list
             list = DoublyLinkedList()
             list.insert_to_front(entry)
             self._arr[hash] = list
             retValue = None
             self.size += 1
-            #print("Here 2")
-            
-         #Check collisions and size to determine if resize required
+    
+         # Check collisions and size to determine if resize required
         if (self.collisions > self.capacity * 0.25) or (self.size > self.capacity * 0.8):
-            #Resize needs to happen
+            # Resize needs to happen
             self.resize_map()
-        
+
         return retValue
-                
 
     def insert_kv(self, key: Any, value: Any) -> Any | None:
         """
@@ -88,7 +86,7 @@ class Map:
         in mind. You can modify this if you want, as long as it behaves.
         Time complexity for full marks: O(1*)
         """
-        #hint: entry = Entry(key, value)
+        # hint: entry = Entry(key, value)
         entry = Entry(key, value)
         return self.insert(entry)
 
@@ -111,22 +109,20 @@ class Map:
         """
         if key is None:
             return None
-        
+
         entry = Entry(key, 0)
         prehash = entry.get_hash()
         hash = prehash % self._primes[self._primesize]
-        #print(hash)
         
         if self._arr[hash] is not None:
-            #Data is inside the hash index
+            # Data is inside the hash index
             value = self._arr[hash].find_and_remove_element(key)
             if value is not False:
-                #Element was in list and removed
+                # Element was in list and removed
                 self.size -= 1
                 if self._arr[hash].get_size() != 0:
-                    #There was a collision in linked list
+                    # There was a collision in linked list
                     self.collisions -= 1
-        
         return
 
     def find(self, key: Any) -> Any | None:
@@ -138,9 +134,9 @@ class Map:
         entry = Entry(key, 0)
         prehash = entry.get_hash()
         hash = prehash % self._primes[self._primesize]
-        
+
         if self._arr[hash] is not None:
-            #Element hash has value
+            # Element hash has value
             entry = self._arr[hash].find_and_return_entry(key)
             if entry is not None:
                 return entry.get_value()
@@ -168,7 +164,7 @@ class Map:
         if self.size == 0:
             return True
         return False
-    
+
     def resize_map(self) -> None:
         oldSize = self._primes[self._primesize]
         self._primesize += 1
@@ -176,27 +172,26 @@ class Map:
         newArr = [None] * newSize
         self.capacity = newSize
         self.collisions = 0
-        
+
         for x in range(oldSize):
             if self._arr[x] is not None:
                 listsize = self._arr[x].get_size()
                 for y in range(listsize):
                     entry = self._arr[x].remove_from_front()
                     new_ix = entry.get_hash() % newSize
-                    #newArr[new_ix] = self._arr[x]
                     if newArr[new_ix] is not None:
-                        #Elements have been added before
+                        # Elements have been added before
                         retValue = newArr[new_ix].find_and_update_entry(entry)
                         if retValue is None:
-                            #Specific key is not in chain yet, add it
+                            # Specific key is not in chain yet, add it
                             newArr[new_ix].insert_to_back(entry)
                             self.collisions += 1
                     else:
-                        #No element in this hash, create list
+                        # No element in this hash, create list
                         list = DoublyLinkedList()
                         list.insert_to_front(entry)
                         newArr[new_ix] = list
-        
+
         #New array contains all hashed functions
         self._arr = newArr
         return
