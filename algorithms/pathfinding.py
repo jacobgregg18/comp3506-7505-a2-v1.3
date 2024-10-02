@@ -55,13 +55,18 @@ def bfs_traversal(
         currentNode = queue.remove_min()
         visited_order.append(currentNode)
         nodes = graph.get_neighbours(currentNode)
+        
+        if currentNode == goal:
+            # Target reached
+            goal_reached = 1
+            break
         for y in nodes:
-            if y.get_id() == goal:
-                # Target reached, append then break
-                visited_order.append(y.get_id())
-                pathMap.insert_kv(y.get_id(), currentNode)
-                goal_reached = 1
-                break
+            # if y.get_id() == goal:
+            #     # Target reached, append then break
+            #     visited_order.append(y.get_id())
+            #     pathMap.insert_kv(y.get_id(), currentNode)
+            #     goal_reached = 1
+            #     break
 
             # Not the target, enqueue and add to visited order if not repeated
             if pathMap.find(y.get_id()) is None:
