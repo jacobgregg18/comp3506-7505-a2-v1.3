@@ -106,11 +106,11 @@ class PriorityQueue:
                 # left child is in heap
                 if right < self.get_size():
                     # right child is in heap
-                    if (self._arr[left].get_key() < self._arr[ix].get_key() and 
+                    if (self._arr[left].get_key() < self._arr[ix].get_key() and
                         self._arr[left].get_key() <= self._arr[right].get_key()):
                         # Left child is smaller than parent and smaller than right child
                         smallest = left
-                    elif (self._arr[right].get_key() < self._arr[ix].get_key() and 
+                    elif (self._arr[right].get_key() < self._arr[ix].get_key() and
                           self._arr[left].get_key() > self._arr[right].get_key()):
                         # Right child is smaller than parent and smaller than left child
                         smallest = right
@@ -150,7 +150,7 @@ class PriorityQueue:
         """
         self._arr = input_list
         elem = self.get_size() - 1
-    
+
         # Loop through from bottom right to top
         # Simulates bottom up construction with continous downheaps per node
         while elem >= 0:
@@ -189,11 +189,11 @@ class PriorityQueue:
                     # left child is in heap
                     if right < count:
                         # right child is in heap
-                        if (self._arr[left].get_key() < self._arr[ix].get_key() and 
+                        if (self._arr[left].get_key() < self._arr[ix].get_key() and
                             self._arr[left].get_key() <= self._arr[right].get_key()):
                             # Left child is smaller than parent and smaller than right child
                             smallest = left
-                        elif (self._arr[right].get_key() < self._arr[ix].get_key() and 
+                        elif (self._arr[right].get_key() < self._arr[ix].get_key() and
                               self._arr[left].get_key() > self._arr[right].get_key()):
                             # Right child is smaller than parent and smaller than left child
                             smallest = right
@@ -223,12 +223,12 @@ class PriorityQueue:
                 # left child is in heap
                 if right < size:
                     # right child is in heap
-                    if (self._arr[left].get_key() < self._arr[elem].get_key() and 
+                    if (self._arr[left].get_key() < self._arr[elem].get_key() and
                         self._arr[left].get_key() <= self._arr[right].get_key()):
                         # Left child is smaller than parent and smaller than right child
                         smallest = left
-                    elif (self._arr[right].get_key() < self._arr[elem].get_key() and 
-                        self._arr[left].get_key() > self._arr[right].get_key()):
+                    elif (self._arr[right].get_key() < self._arr[elem].get_key() and
+                          self._arr[left].get_key() > self._arr[right].get_key()):
                         # Right child is smaller than parent and smaller than left child
                         smallest = right
                 else:

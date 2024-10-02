@@ -41,7 +41,7 @@ class Map:
         self._arr = [None] * 769
         self.capacity = 769
         self._primes = [769, 1543, 6151, 49157, 786433, 3145739, 12582917]
-        self._primesize = 0 
+        self._primesize = 0
 
     def insert(self, entry: Entry) -> Any | None:
         """
@@ -56,7 +56,6 @@ class Map:
         if self._arr[hash] is not None:
             # Elements have been added before
             retValue = self._arr[hash].find_and_update_entry(entry)
-            # print("Repeat")
             if retValue is None:
                 # Specific key is not in chain yet, add it
                 self._arr[hash].insert_to_back(entry)
