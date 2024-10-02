@@ -129,7 +129,7 @@ class Map:
         Find and return the value v corresponding to key k if it
         exists; return None otherwise.
         Time complexity for full marks: O(1*)
-        """      
+        """
         entry = Entry(key, 0)
         prehash = entry.get_hash()
         hash = prehash % self._primes[self._primesize]

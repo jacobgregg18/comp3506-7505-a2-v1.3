@@ -67,7 +67,7 @@ def bfs_traversal(
             if pathMap.find(y.get_id()) is None:
                 queue.insert_fifo(y.get_id())
                 pathMap.insert_kv(y.get_id(), currentNode)
-                visited_order.append(y.get_id())
+                # visited_order.append(y.get_id())
 
     # Create the path by travesing the map of nodes visited, if goal was reached
     if goal_reached == 1:
