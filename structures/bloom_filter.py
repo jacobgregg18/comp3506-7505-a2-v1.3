@@ -119,8 +119,8 @@ class BloomFilter:
         elif hash_type == 2:
             return self.hash_two(bits) % self._primes[compression_number]
         else:
-            return self.hash_three(bits) % self._primes[compression_number]  
-    
+            return self.hash_three(bits) % self._primes[compression_number]
+
     def hash_one(self, value: int) -> int:
         return (3079 * value + 98317) % 50331653
 

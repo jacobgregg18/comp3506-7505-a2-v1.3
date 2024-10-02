@@ -17,7 +17,7 @@ from structures.util import Hashable
 
 def bfs_traversal(
     graph: Graph | LatticeGraph, origin: int, goal: int
-    ) -> tuple[DynamicArray, DynamicArray]:
+        ) -> tuple[DynamicArray, DynamicArray]:
     """
     Task 2.1: Breadth First Search
 
@@ -39,21 +39,25 @@ def bfs_traversal(
     path = DynamicArray()
     reversedPath = DynamicArray()
 
+    if origin == goal:
+        visited_order.append(origin)
+        path.append(origin)
+        return (path, visited_order)
+
     # ALGO GOES HERE
     queue = PriorityQueue()
     queue.insert_fifo(origin)
-    visited_order.append(origin)
     pathMap = Map()
     pathMap.insert_kv(origin, origin)
     goal_reached = 0
 
     while queue.get_size() > 0:
         currentNode = queue.remove_min()
+        visited_order.append(currentNode)
         nodes = graph.get_neighbours(currentNode)
         for y in nodes:
             if y.get_id() == goal:
                 # Target reached, append then break
-                visited_order.append(y.get_id())
                 pathMap.insert_kv(y.get_id(), currentNode)
                 goal_reached = 1
                 break
@@ -70,7 +74,7 @@ def bfs_traversal(
             reversedPath.append(goal)
             goal = pathMap.find(goal)
 
-        # Add the origin at the end  
+        # Add the origin at the end
         reversedPath.append(origin)
 
         for x in range(reversedPath.get_size()):
@@ -106,7 +110,7 @@ def dijkstra_traversal(graph: Graph, origin: int) -> DynamicArray:
 
 def dfs_traversal(
     graph: Graph | LatticeGraph, origin: int, goal: int
-    ) -> tuple[DynamicArray, DynamicArray]: 
+        ) -> tuple[DynamicArray, DynamicArray]:
     """
     Task 2.3: Depth First Search **** COMP7505 ONLY ****
     COMP3506 students can do this for funsies.
@@ -122,7 +126,6 @@ def dfs_traversal(
       1. The ordered path between the origin and the goal in node IDs
       (or an empty DynamicArray if no path exists);
       2. The IDs of all nodes in the order they were visited.
-    
     """
     # Stores the keys of the nodes in the order they were visited
     visited_order = DynamicArray()
@@ -133,7 +136,3 @@ def dfs_traversal(
 
     # Return the path and the visited nodes list
     return (path, visited_order)
-
-
-
-

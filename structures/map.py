@@ -41,8 +41,7 @@ class Map:
         self._arr = [None] * 769
         self.capacity = 769
         self._primes = [769, 1543, 6151, 49157, 786433, 3145739, 12582917]
-        self._primesize = 0
-        
+        self._primesize = 0 
 
     def insert(self, entry: Entry) -> Any | None:
         """
@@ -70,8 +69,8 @@ class Map:
             self._arr[hash] = list
             retValue = None
             self.size += 1
-    
-         # Check collisions and size to determine if resize required
+
+        # Check collisions and size to determine if resize required
         if (self.collisions > self.capacity * 0.25) or (self.size > self.capacity * 0.8):
             # Resize needs to happen
             self.resize_map()
@@ -113,7 +112,7 @@ class Map:
         entry = Entry(key, 0)
         prehash = entry.get_hash()
         hash = prehash % self._primes[self._primesize]
-        
+
         if self._arr[hash] is not None:
             # Data is inside the hash index
             value = self._arr[hash].find_and_remove_element(key)
@@ -130,7 +129,7 @@ class Map:
         Find and return the value v corresponding to key k if it
         exists; return None otherwise.
         Time complexity for full marks: O(1*)
-        """        
+        """      
         entry = Entry(key, 0)
         prehash = entry.get_hash()
         hash = prehash % self._primes[self._primesize]
