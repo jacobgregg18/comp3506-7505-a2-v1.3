@@ -44,7 +44,8 @@ class BloomFilter:
         self._hashes = int((self._bits / max_keys) * math.log(2) + 1)
         if self._hashes > 15:
             self._hashes = 15
-        self._primes = [6151, 49157, 786433]
+        self._primes = [98317, 196613, 393241, 786433, 1572869, 3145739, 6291469, 12582917, 25165843, 50331653, 
+                        100663319, 201326611, 402653189, 805306457, 1610612741]
         # More variables here if you need, of course
 
     def __str__(self) -> str:
@@ -66,7 +67,7 @@ class BloomFilter:
         self._contains += 1
 
         for x in range(self._hashes):
-            hash1 = self.hash(key, x + 1)
+            hash1 = self.hash(key, x)
             self._data.set_at(hash1)
 
     def contains(self, key: Any) -> bool:
@@ -76,7 +77,7 @@ class BloomFilter:
         Time complexity for full marks: O(1)
         """
         for x in range(self._hashes):
-            hash = self.hash(key, x + 1)
+            hash = self.hash(key, x)
             if self._data.get_at(hash) == 0:
                 # Number not set, number not in set
                 return False
@@ -110,6 +111,8 @@ class BloomFilter:
     def hash(self, value: Any, hash_number: int) -> int:
         bytes = structures.util.object_to_byte_array(value)
         bits = int.from_bytes(bytes, "big")
+        
+        return ((24593 * bits + 49157) % self._primes[hash_number]) % self._bits
 
         hash_type = hash_number % 3
         compression_number = hash_number // 3
