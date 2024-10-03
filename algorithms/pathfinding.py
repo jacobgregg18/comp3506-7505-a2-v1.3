@@ -102,8 +102,38 @@ def dijkstra_traversal(graph: Graph, origin: int) -> DynamicArray:
     valid_locations = DynamicArray() # This holds your answers
 
     # ALGO GOES HERE
+    map = Map()
+    queue = PriorityQueue()
+    queue.insert(0, origin)
+    map.insert_kv(origin, 0)
+    visited = DynamicArray()
+    visited.append(origin)
+    
+    while queue.is_empty() is False:
+        currentDistance = queue.get_min_priority()
+        currentNode = queue.remove_min()
+        nodes = graph.get_neighbours(currentNode)
+        
+        if currentDistance != map.find(currentNode):
+            continue
+        
+        for node in nodes:
+            # Check if Node has a value
+            if map.find(node[0].get_id()) is None:
+                # Node has just been discovered, add value to node plus parents
+                map.insert_kv(node[0].get_id(), node[1] + currentDistance)
+                queue.insert(node[1] + currentDistance, node[0].get_id())
+                visited.append(node[0].get_id())
+            else:
+                # Node already has been discovered, check if new size is smaller
+                if node[1] + currentDistance < map.find(node[0].get_id()):
+                    map.insert_kv(node[0].get_id(), node[1] + currentDistance)
+                    queue.insert(node[1] + currentDistance, node[0].get_id())
 
     # Return the DynamicArray containing Entry types
+    for x in range(visited.get_size()):
+        valid_locations.append(Entry(visited.get_at(x), map.find(visited.get_at(x))))
+        # print("ID of: " + str(visited.get_at(x)) + " Distance of: " + str(map.find(visited.get_at(x))))
     return valid_locations
 
 
