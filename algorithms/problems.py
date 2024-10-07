@@ -33,6 +33,7 @@ from structures.map import Map
 from structures.pqueue import PriorityQueue
 from structures.bloom_filter import BloomFilter
 from structures.util import Hashable
+import math
 
 
 
@@ -159,11 +160,42 @@ def chain_reaction(compounds: list[Compound]) -> int:
     # DO THE THING
     
     reactions = DynamicArray()
+    size = len(compounds)
+    reactions.allocate(size * size, 0)
     
-    for x in range(len(compounds)):
-        
-        for y in range(len(compounds)):
-            yo = x + y
+    # First iteration adds reactions based on occurance from main reaction
+    for x in range(size):
+        base = compounds[x].get_coordinates()
+        base_radius = compounds[x].get_radius()
+        for y in range(size):
+            compare = compounds[y].get_coordinates()
+            x_diff = base[0] - compare[0]
+            y_diff = base[1] - compare[1]
+            if (math.pow(x_diff, 2) + math.pow(y_diff, 2)) <= math.pow(base_radius, 2):
+                # The comparison is inside the chain reaction
+                reactions.set_at((x * size) + y, 1)
+
+    # Second iteration adds the chain reactions
+    for x in range(size):
+        for y in range(size):
+            if reactions.get_at(x * size + y) == 1:
+                # Reaction occurs, cycle through reactions and add to X
+                for z in range(size):
+                    if reactions.get_at(y * size + z) == 1:
+                        reactions.set_at(x * size + z, 1)     
+
+    # Third iteration sums the total reactions
+    max_size = -1
+    sum = 0
+    for x in range(size):
+        for y in range(size):
+            sum += reactions.get_at(x * size + y)
+        if sum > max_size:
+            max_size = sum
+            maximal_compound = compounds[x].get_compound_id()
+        if sum == max_size:
+            if compounds[x].get_compound_id() < maximal_compound:
+                maximal_compound = compounds[x].get_compound_id()
 
     return maximal_compound
 
