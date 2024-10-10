@@ -12,6 +12,7 @@ import random
 import sys
 import time
 import argparse
+import matplotlib.pyplot as plt
 
 # Import our structures
 from structures.entry import Entry, Compound, Offer
@@ -103,6 +104,20 @@ def test_chain_reaction():
         if xy_key not in locations:
             compounds.append(Compound(x, y, r, cid))
             locations.add(xy_key)
+    
+    plt.axis("equal")
+    ax = plt.gca()
+    ax.set_xlim([MIN_X - MAX_R, MAX_X + MAX_R])
+    ax.set_ylim([MIN_Y - MAX_R, MAX_Y + MAX_R])
+
+    for compound in compounds:
+        x, y = compound.get_coordinates()
+        rand_color = [random.uniform(0.01, 1) for _ in range(3)]
+        plt.plot(x, y, 'o', color=rand_color)
+        circle = plt.Circle((x, y), radius=compound.get_radius(), color=rand_color, alpha=0.2)
+        plt.gca().add_artist(circle)
+        ax.annotate(str(compound.get_compound_id()), (x,y))
+    plt.show()
 
     print ("Generated", len(compounds), "compounds.")
     #for compound in compounds:

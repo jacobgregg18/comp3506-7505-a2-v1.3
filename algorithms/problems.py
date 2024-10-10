@@ -196,6 +196,7 @@ def chain_reaction(compounds: list[Compound]) -> int:
     reactions = DynamicArray()
     size = len(compounds)
     reactions.allocate(size * size, 0)
+    #print(reactions.get_size())
     
     # First iteration adds reactions based on occurance from main reaction
     for x in range(size):
@@ -227,6 +228,7 @@ def chain_reaction(compounds: list[Compound]) -> int:
         if sum > max_size:
             max_size = sum
             maximal_compound = compounds[x].get_compound_id()
+            #print(str(maximal_compound) + " " + str(max_size))
         if sum == max_size:
             if compounds[x].get_compound_id() < maximal_compound:
                 maximal_compound = compounds[x].get_compound_id()
