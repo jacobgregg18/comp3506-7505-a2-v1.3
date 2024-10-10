@@ -110,6 +110,7 @@ def test_chain_reaction():
  
     # You can now run and test your algorithm
     trigger_compound  = chain_reaction(compounds)
+    print(trigger_compound)
 
 
 def test_labyrinth():

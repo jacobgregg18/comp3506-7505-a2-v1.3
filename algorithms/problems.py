@@ -26,7 +26,7 @@ problems. Or maybe not. We did it for you just in case.
 """
 from structures.entry import Entry, Compound, Offer
 from structures.dynamic_array import DynamicArray
-from structures.linked_list import DoublyLinkedList
+from structures.linked_list import DoublyLinkedList, DLLNode
 from structures.bit_vector import BitVector
 from structures.graph import Graph, LatticeGraph
 from structures.map import Map
@@ -34,6 +34,7 @@ from structures.pqueue import PriorityQueue
 from structures.bloom_filter import BloomFilter
 from structures.util import Hashable
 import math
+import algorithms.pathfinding
 
 
 
@@ -118,6 +119,7 @@ def dora(graph: Graph, start: int, symbol_sequence: str,
 
     """
     coded_sequence = BitVector()
+    queue = PriorityQueue()
 
     """
     list of Entry objects, each entry has key=symbol, value=str. The str
@@ -125,9 +127,41 @@ def dora(graph: Graph, start: int, symbol_sequence: str,
     given key. For example: x = Entry("c", "1101")
     """
     codebook = []
+    symbol = []
+    frequency = []
 
     # DO THE THING
+    count = 0
+    node = graph.get_node(count)
+    while node is not None:
+        (path, visited) = algorithms.pathfinding.bfs_traversal(graph, start, count)
 
+        if path.is_empty() is False:
+            # Node is reachable from the start
+            for x in range(len(symbol)):
+                if symbol[x] == node.get_data():
+                    frequency[x] += 1
+                    continue
+            symbol.append(node.get_data())
+            frequency.append(1)
+
+        count += 1
+        node = graph.get_node(count)
+    
+    # Huffman time
+    for x in range(len(frequency)):
+        queue.insert(frequency[x], symbol[x])
+        print("Symbol: " + str(symbol[x]) + " Frequency: " + str(frequency[x]))
+    
+    while queue.get_size() > 1:
+        left = (queue.get_min_priority(), queue.remove_min())
+        right = (queue.get_min_priority(), queue.remove_min())
+        node = DLLNode(left[0] + right[0])
+        node.set_prev(left[1])
+        node.set_next(right[1])
+        queue.insert(node.get_data(), node)
+
+    tree = queue.remove_min()
     return (coded_sequence, codebook)
 
 
@@ -196,7 +230,7 @@ def chain_reaction(compounds: list[Compound]) -> int:
         if sum == max_size:
             if compounds[x].get_compound_id() < maximal_compound:
                 maximal_compound = compounds[x].get_compound_id()
-
+        sum = 0
     return maximal_compound
 
 

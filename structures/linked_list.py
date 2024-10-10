@@ -25,6 +25,7 @@ class DLLNode:
         self._data = data
         self._next = None
         self._prev = None
+        self._huff = ''
 
     def set_data(self, data: Any) -> None:
         self._data = data
