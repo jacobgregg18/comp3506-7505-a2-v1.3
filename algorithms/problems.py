@@ -24,7 +24,7 @@ There will be hidden tests in each category that will be published only after th
 You may wish to import your data structures to help you with some of the
 problems. Or maybe not. We did it for you just in case.
 """
-from structures.entry import Entry, Compound, Offer
+from structures.entry import Entry, Compound, Offer, TreeNode
 from structures.dynamic_array import DynamicArray
 from structures.linked_list import DoublyLinkedList, DLLNode
 from structures.bit_vector import BitVector
@@ -150,18 +150,53 @@ def dora(graph: Graph, start: int, symbol_sequence: str,
     
     # Huffman time
     for x in range(len(frequency)):
-        queue.insert(frequency[x], symbol[x])
-        print("Symbol: " + str(symbol[x]) + " Frequency: " + str(frequency[x]))
+        node = TreeNode(symbol[x], frequency[x])
+        queue.insert(frequency[x], node)
+        #print("Symbol: " + str(symbol[x]) + " Frequency: " + str(frequency[x]))
     
     while queue.get_size() > 1:
-        left = (queue.get_min_priority(), queue.remove_min())
-        right = (queue.get_min_priority(), queue.remove_min())
-        node = DLLNode(left[0] + right[0])
-        node.set_prev(left[1])
-        node.set_next(right[1])
-        queue.insert(node.get_data(), node)
+        left = queue.remove_min()
+        # left.set_huffman('0')
+        right = queue.remove_min()
+        # right.set_huffman('1')
+        node = TreeNode(None, left.get_freq() + right.get_freq())
+        node.set_left(left)
+        node.set_right(right)
+        queue.insert(node.get_freq(), node)
 
     tree = queue.remove_min()
+    codeMap = Map()
+    # print(tree.get_left().get_left().get_data())
+    stack = DoublyLinkedList()
+    pointer = tree
+    stack.insert_to_front(Entry(tree, ''))
+    while stack.get_size() > 0:
+        node = stack.remove_from_front()
+        left = node.get_key().get_left()
+        right = node.get_key().get_right()
+        
+        if left.get_data() is None:
+            stack.insert_to_front(Entry(left, node.get_value() + '0'))
+        else:
+            codeMap.insert_kv(left.get_data(), node.get_value())
+            codebook.append(Entry(left.get_data(), node.get_value() + '0'))
+            #print(node.get_value() + '0')
+        
+        if right.get_data() is None:
+            stack.insert_to_front(Entry(right, node.get_value() + '1'))
+        else:
+            codeMap.insert_kv(right.get_data(), node.get_value())
+            codebook.append(Entry(right.get_data(), node.get_value() + '1'))
+            #print(node.get_value() + '1')
+            
+    for x in symbol_sequence:
+        #print(x)
+        huffman = codeMap.find(x)
+        for y in huffman:
+            #print(y)
+            coded_sequence.append(int(y))
+
+    #print(coded_sequence)
     return (coded_sequence, codebook)
 
 

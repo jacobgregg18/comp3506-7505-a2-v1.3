@@ -104,7 +104,6 @@ class Compound:
                 ", r = " + str(self._r) + 
                 ", cid = " + str(self._cid))
  
-
 class Offer:
     """
     Implements the Offer Type used in Task 3.4. Please do not modify this
@@ -149,3 +148,48 @@ class Offer:
                 ", cost = " + str(self._cost) + 
                 ", oid = " + str(self._oid))
  
+class TreeNode:
+    """
+    A simple type to hold data and a left and right pointer.
+    """
+
+    def __init__(self, data: Any, frequency: int) -> None:
+        """
+        Store some data, and a prev/next ptr.
+        """
+        self._data = data
+        self._frequency = frequency
+        self._left = None
+        self._right = None
+        self._parent = None
+        self._huff = ""
+
+    def set_data(self, data: Any) -> None:
+        self._data = data
+
+    def get_data(self) -> Any:
+        return self._data
+
+    def set_left(self, node) -> None:
+        self._left = node
+
+    def get_left(self) -> Any:
+        return self._left
+
+    def set_right(self, node) -> None:
+        self._right = node
+
+    def get_right(self) -> Any:
+        return self._right
+
+    def set_huffman(self, value) -> None:
+        self._huff += value
+
+    def get_huffman(self) -> None:
+        return self._huff
+
+    def set_freq(self, value) -> None:
+        self._frequency = value
+
+    def get_freq(self) -> Any:
+        return self._frequency
