@@ -153,14 +153,14 @@ class TreeNode:
     A simple type to hold data and a left and right pointer.
     """
 
-    def __init__(self, data: Any, frequency: int) -> None:
+    def __init__(self, data: Any, frequency: int, left, right) -> None:
         """
         Store some data, and a prev/next ptr.
         """
         self._data = data
         self._frequency = frequency
-        self._left = None
-        self._right = None
+        self._left = left
+        self._right = right
         self._parent = None
         self._huff = ""
 

@@ -35,6 +35,7 @@ from structures.bloom_filter import BloomFilter
 from structures.util import Hashable
 import math
 import algorithms.pathfinding
+import time
 
 
 
@@ -131,44 +132,47 @@ def dora(graph: Graph, start: int, symbol_sequence: str,
     frequency = []
 
     # DO THE THING
+    st = time.time()
     count = 0
+    visit = 0
     node = graph.get_node(count)
+    symbolMap = Map()
     while node is not None:
         (path, visited) = algorithms.pathfinding.bfs_traversal(graph, start, count)
 
         if path.is_empty() is False:
             # Node is reachable from the start
-            for x in range(len(symbol)):
-                if symbol[x] == node.get_data():
-                    frequency[x] += 1
-                    continue
-            symbol.append(node.get_data())
-            frequency.append(1)
+            index = symbolMap.find(node.get_data())
+            if index is None:
+                # Node not in the map yet
+                symbolMap.insert_kv(node.get_data(), visit)
+                symbol.append(node.get_data())
+                frequency.append(1)
+                visit += 1
+            else:
+                # Node is in map
+                frequency[index] += 1
 
         count += 1
         node = graph.get_node(count)
-    
+
     # Huffman time
     for x in range(len(frequency)):
-        node = TreeNode(symbol[x], frequency[x])
+        node = TreeNode(symbol[x], frequency[x], None, None)
         queue.insert(frequency[x], node)
         #print("Symbol: " + str(symbol[x]) + " Frequency: " + str(frequency[x]))
     
     while queue.get_size() > 1:
         left = queue.remove_min()
-        # left.set_huffman('0')
         right = queue.remove_min()
-        # right.set_huffman('1')
-        node = TreeNode(None, left.get_freq() + right.get_freq())
-        node.set_left(left)
-        node.set_right(right)
+        node = TreeNode(None, left.get_freq() + right.get_freq(), left, right)
         queue.insert(node.get_freq(), node)
 
     tree = queue.remove_min()
     codeMap = Map()
+    
     # print(tree.get_left().get_left().get_data())
     stack = DoublyLinkedList()
-    pointer = tree
     stack.insert_to_front(Entry(tree, ''))
     while stack.get_size() > 0:
         node = stack.remove_from_front()
@@ -178,17 +182,17 @@ def dora(graph: Graph, start: int, symbol_sequence: str,
         if left.get_data() is None:
             stack.insert_to_front(Entry(left, node.get_value() + '0'))
         else:
-            codeMap.insert_kv(left.get_data(), node.get_value())
+            codeMap.insert_kv(left.get_data(), node.get_value() + '0')
             codebook.append(Entry(left.get_data(), node.get_value() + '0'))
             #print(node.get_value() + '0')
         
         if right.get_data() is None:
             stack.insert_to_front(Entry(right, node.get_value() + '1'))
         else:
-            codeMap.insert_kv(right.get_data(), node.get_value())
+            codeMap.insert_kv(right.get_data(), node.get_value() + '1')
             codebook.append(Entry(right.get_data(), node.get_value() + '1'))
             #print(node.get_value() + '1')
-            
+           
     for x in symbol_sequence:
         #print(x)
         huffman = codeMap.find(x)
@@ -196,7 +200,11 @@ def dora(graph: Graph, start: int, symbol_sequence: str,
             #print(y)
             coded_sequence.append(int(y))
 
-    #print(coded_sequence)
+    # print(coded_sequence)
+    # et = time.time()
+    # elapsed = et-st
+    # print(elapsed)
+    
     return (coded_sequence, codebook)
 
 
