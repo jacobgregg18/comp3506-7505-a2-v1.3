@@ -132,60 +132,41 @@ def dora(graph: Graph, start: int, symbol_sequence: str,
     frequency = []
 
     # DO THE THING
-    count = 0
-    node = graph.get_node(count)
+    node = graph.get_node(start)
     symbolMap = Map()
     visit = 0
     pathMap = Map()
-    reachable = 0
-    
-    while node is not None:
-        
-        queue = PriorityQueue()
-        queue.insert_fifo(start)
-        pathMap.insert_kv(start, start)
-        
-        if pathMap.find(count) is not None:
-            # Node has already been visited, thus, reachable
-            currentNode = queue.remove_min()
-            reachable = 1
+    pathMap.insert_kv(start, node.get_data())
+    queue = PriorityQueue()
+    queue.insert_fifo(start)
 
-        while queue.get_size() > 0:
-            currentNode = queue.remove_min()
-            nodes = graph.get_neighbours(currentNode)
+    while queue.get_size() > 0:
+        currentNode = queue.remove_min()
+        nodes = graph.get_neighbours(currentNode)
             
-            if currentNode == count:
-                # Target reached
-                reachable = 1
-                break
-            
-            for y in nodes:
-                # Not the target, enqueue and add to visited order if not repeated
-                if pathMap.find(y.get_id()) is None:
-                    queue.insert_fifo(y.get_id())
-                    pathMap.insert_kv(y.get_id(), currentNode)
-
-        if reachable == 1:
-            # Node is reachable from the start
-            index = symbolMap.find(node.get_data())
-            if index is None:
-                # Node not in the map yet
-                symbolMap.insert_kv(node.get_data(), visit)
-                visit += 1
-                symbol.append(node.get_data())
-                frequency.append(1)
-            else:
-                # Node is in map
-                frequency[index] += 1
-            reachable = 0
-        count += 1
-        node = graph.get_node(count)
+        for y in nodes:
+            # Not the target, enqueue and add to visited order if not repeated
+            if pathMap.find(y.get_id()) is None:
+                queue.insert_fifo(y.get_id())
+                pathMap.insert_kv(y.get_id(), y.get_data())
+                
+                # Node is reachable from the start
+                index = symbolMap.find(y.get_data())
+                if index is None:
+                    # Node not in the map yet
+                    symbolMap.insert_kv(y.get_data(), visit)
+                    visit += 1
+                    symbol.append(y.get_data())
+                    frequency.append(1)
+                else:
+                    # Node is in map
+                    frequency[index] += 1
 
     # Huffman time
     for x in range(len(frequency)):
         node = TreeNode(symbol[x], frequency[x], None, None)
         queue.insert(frequency[x], node)
-        print("Symbol: " + str(symbol[x]) + " Frequency: " + str(frequency[x]))
+        #print("Symbol: " + str(symbol[x]) + " Frequency: " + str(frequency[x]))
     
     while queue.get_size() > 1:
         left = queue.remove_min()
@@ -224,8 +205,8 @@ def dora(graph: Graph, start: int, symbol_sequence: str,
             #print(y)
             coded_sequence.append(int(y))
 
-    for code in codebook:
-        print("Code length is " + str(code.get_value()) + " char is " + str(code.get_key()))
+    #for code in codebook:
+        #print("Code length is " + str(code.get_value()) + " char is " + str(code.get_key()))
     
     return (coded_sequence, codebook)
 
