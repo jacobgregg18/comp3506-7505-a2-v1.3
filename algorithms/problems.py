@@ -161,7 +161,7 @@ def dora(graph: Graph, start: int, symbol_sequence: str,
     for x in range(len(frequency)):
         node = TreeNode(symbol[x], frequency[x], None, None)
         queue.insert(frequency[x], node)
-        #print("Symbol: " + str(symbol[x]) + " Frequency: " + str(frequency[x]))
+        print("Symbol: " + str(symbol[x]) + " Frequency: " + str(frequency[x]))
     
     while queue.get_size() > 1:
         left = queue.remove_min()
@@ -306,11 +306,11 @@ def chain_reaction(compounds: list[Compound]) -> int:
     # Second iteration adds the chain reactions
     for x in range(size):
         for y in range(size):
-            if reactions[x * size + y] == 1:
+            for z in range(size):
+                if reactions[x * size + y] == 1:
                 # Reaction occurs, cycle through reactions and add to X
-                for z in range(size):
                     if reactions[y * size + z] == 1:
-                        reactions[x * size + z] = 1     
+                        reactions[x * size + z] = 1
 
     # Third iteration sums the total reactions
     max_size = -1
