@@ -138,10 +138,36 @@ def dora(graph: Graph, start: int, symbol_sequence: str,
     visit = 0
     node = graph.get_node(count)
     symbolMap = Map()
+    pathMap = Map()
+    reachable = 0
+    
     while node is not None:
-        (path, visited) = algorithms.pathfinding.bfs_traversal(graph, start, count)
+        
+        queue = PriorityQueue()
+        queue.insert_fifo(start)
+        pathMap.insert_kv(start, start)
+        
+        if pathMap.find(count) is not None:
+            # Node has already been visited, thus, reachable
+            currentNode = queue.remove_min()
+            reachable = 1
 
-        if path.is_empty() is False:
+        while queue.get_size() > 0:
+            currentNode = queue.remove_min()
+            nodes = graph.get_neighbours(currentNode)
+            
+            if currentNode == count:
+                # Target reached
+                reachable = 1
+                break
+            
+            for y in nodes:
+                # Not the target, enqueue and add to visited order if not repeated
+                if pathMap.find(y.get_id()) is None:
+                    queue.insert_fifo(y.get_id())
+                    pathMap.insert_kv(y.get_id(), currentNode)
+
+        if reachable == 1:
             # Node is reachable from the start
             index = symbolMap.find(node.get_data())
             if index is None:
@@ -153,7 +179,7 @@ def dora(graph: Graph, start: int, symbol_sequence: str,
             else:
                 # Node is in map
                 frequency[index] += 1
-
+            reachable = 0
         count += 1
         node = graph.get_node(count)
 
@@ -233,56 +259,6 @@ def chain_reaction(compounds: list[Compound]) -> int:
             @compounds@ has up to 100 elements
 
     """
-    # st = time.time()
-    # maximal_compound = -1
-    
-    # # DO THE THING
-    
-    # reactions = DynamicArray()
-    # size = len(compounds)
-    # reactions.allocate(size * size, 0)
-    # #print(reactions.get_size())
-    
-    # # First iteration adds reactions based on occurance from main reaction
-    # for x in range(size):
-    #     base = compounds[x].get_coordinates()
-    #     base_radius = compounds[x].get_radius()
-    #     for y in range(size):
-    #         compare = compounds[y].get_coordinates()
-    #         x_diff = base[0] - compare[0]
-    #         y_diff = base[1] - compare[1]
-    #         if (math.pow(x_diff, 2) + math.pow(y_diff, 2)) <= math.pow(base_radius, 2):
-    #             # The comparison is inside the chain reaction
-    #             reactions.set_at((x * size) + y, 1)
-
-    # # Second iteration adds the chain reactions
-    # for x in range(size):
-    #     for y in range(size):
-    #         if reactions.get_at(x * size + y) == 1:
-    #             # Reaction occurs, cycle through reactions and add to X
-    #             for z in range(size):
-    #                 if reactions.get_at(y * size + z) == 1:
-    #                     reactions.set_at(x * size + z, 1)     
-
-    # # Third iteration sums the total reactions
-    # max_size = -1
-    # sum = 0
-    # for x in range(size):
-    #     for y in range(size):
-    #         sum += reactions.get_at(x * size + y)
-    #     if sum > max_size:
-    #         max_size = sum
-    #         maximal_compound = compounds[x].get_compound_id()
-    #         #print(str(maximal_compound) + " " + str(max_size))
-    #     if sum == max_size:
-    #         if compounds[x].get_compound_id() < maximal_compound:
-    #             maximal_compound = compounds[x].get_compound_id()
-    #     sum = 0
-    
-    # et = time.time()
-    # print(maximal_compound)
-    
-    # st2 = time.time()
     maximal_compound = -1
     
     # DO THE THING
@@ -300,9 +276,7 @@ def chain_reaction(compounds: list[Compound]) -> int:
             if (math.pow(x_diff, 2) + math.pow(y_diff, 2)) <= math.pow(base_radius, 2):
                 # The comparison is inside the chain reaction
                 reactions[(x * size) + y] = 1
-    for x in range(size):
-        print(reactions[x*size:size*x+size])
-    print("break")
+
     # Second iteration adds the chain reactions
     for x in range(size):
         for y in range(size):
@@ -316,7 +290,6 @@ def chain_reaction(compounds: list[Compound]) -> int:
     max_size = -1
     sum = 0
     for x in range(size):
-        print(reactions[x*size:size*x+size])
         for y in range(size):
             sum += reactions[x * size + y]
         if sum > max_size:
@@ -327,11 +300,7 @@ def chain_reaction(compounds: list[Compound]) -> int:
             if compounds[x].get_compound_id() < maximal_compound:
                 maximal_compound = compounds[x].get_compound_id()
         sum = 0
-    # et2 = time.time()
-    
-    # print(et-st)
-    # print(et2 - st2)
-    # print(reactions)
+
     return maximal_compound
 
 
