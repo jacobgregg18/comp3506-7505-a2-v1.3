@@ -143,24 +143,25 @@ def dora(graph: Graph, start: int, symbol_sequence: str,
     while queue.get_size() > 0:
         currentNode = queue.remove_min()
         nodes = graph.get_neighbours(currentNode)
+        
+                        
+        # Node is reachable from the start
+        index = symbolMap.find(graph.get_node(currentNode).get_data())
+        if index is None:
+            # Node not in the map yet
+            symbolMap.insert_kv(graph.get_node(currentNode).get_data(), visit)
+            visit += 1
+            symbol.append(graph.get_node(currentNode).get_data())
+            frequency.append(1)
+        else:
+            # Node is in map
+            frequency[index] += 1  
             
         for y in nodes:
             # Not the target, enqueue and add to visited order if not repeated
             if pathMap.find(y.get_id()) is None:
                 queue.insert_fifo(y.get_id())
                 pathMap.insert_kv(y.get_id(), y.get_data())
-                
-                # Node is reachable from the start
-                index = symbolMap.find(y.get_data())
-                if index is None:
-                    # Node not in the map yet
-                    symbolMap.insert_kv(y.get_data(), visit)
-                    visit += 1
-                    symbol.append(y.get_data())
-                    frequency.append(1)
-                else:
-                    # Node is in map
-                    frequency[index] += 1
 
     # Huffman time
     for x in range(len(frequency)):
@@ -199,7 +200,6 @@ def dora(graph: Graph, start: int, symbol_sequence: str,
             #print(node.get_value() + '0')
            
     for x in symbol_sequence:
-        #print(x)
         huffman = codeMap.find(x)
         for y in huffman:
             #print(y)
