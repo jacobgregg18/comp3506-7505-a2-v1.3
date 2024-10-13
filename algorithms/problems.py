@@ -133,6 +133,7 @@ def dora(graph: Graph, start: int, symbol_sequence: str,
 
     # DO THE THING
     st = time.time()
+    print(st)
     count = 0
     visit = 0
     node = graph.get_node(count)
@@ -173,24 +174,24 @@ def dora(graph: Graph, start: int, symbol_sequence: str,
     
     # print(tree.get_left().get_left().get_data())
     stack = DoublyLinkedList()
-    stack.insert_to_front(Entry(tree, ''))
+    stack.insert_to_front((tree, ''))
     while stack.get_size() > 0:
         node = stack.remove_from_front()
-        left = node.get_key().get_left()
-        right = node.get_key().get_right()
+        left = node[0].get_left()
+        right = node[0].get_right()
         
         if left.get_data() is None:
-            stack.insert_to_front(Entry(left, node.get_value() + '0'))
+            stack.insert_to_front((left, node[1] + '0'))
         else:
-            codeMap.insert_kv(left.get_data(), node.get_value() + '0')
-            codebook.append(Entry(left.get_data(), node.get_value() + '0'))
+            codeMap.insert_kv(left.get_data(), node[1] + '0')
+            codebook.append((left.get_data(), node[1] + '0'))
             #print(node.get_value() + '0')
         
         if right.get_data() is None:
-            stack.insert_to_front(Entry(right, node.get_value() + '1'))
+            stack.insert_to_front((right, node[1] + '1'))
         else:
-            codeMap.insert_kv(right.get_data(), node.get_value() + '1')
-            codebook.append(Entry(right.get_data(), node.get_value() + '1'))
+            codeMap.insert_kv(right.get_data(), node[1] + '1')
+            codebook.append((right.get_data(), node[1] + '1'))
             #print(node.get_value() + '1')
            
     for x in symbol_sequence:
@@ -201,9 +202,9 @@ def dora(graph: Graph, start: int, symbol_sequence: str,
             coded_sequence.append(int(y))
 
     # print(coded_sequence)
-    # et = time.time()
-    # elapsed = et-st
-    # print(elapsed)
+    et = time.time()
+    elapsed = et-st
+    print(elapsed)
     
     return (coded_sequence, codebook)
 
