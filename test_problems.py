@@ -84,15 +84,15 @@ def test_chain_reaction():
     # Set up some params
     # x dim is 100
     MIN_X = 0
-    MAX_X = 10
+    MAX_X = 100
     # y dim is 100
     MIN_Y = 0
-    MAX_Y = 10
+    MAX_Y = 100
     # minimum radius is 1, max is 25
     MIN_R = 1
-    MAX_R = 3
+    MAX_R = 20
     # maximum compound count
-    COMPOUNDS = 10
+    COMPOUNDS = 100
 
     compounds = []
     locations = set() # ensure we do not duplicate x/y coords
@@ -104,27 +104,30 @@ def test_chain_reaction():
         if xy_key not in locations:
             compounds.append(Compound(x, y, r, cid))
             locations.add(xy_key)
-    plt.axis("equal")
-    ax = plt.gca()
-    ax.set_xlim([MIN_X - MAX_R, MAX_X + MAX_R])
-    ax.set_ylim([MIN_Y - MAX_R, MAX_Y + MAX_R])
+    # plt.axis("equal")
+    # ax = plt.gca()
+    # ax.set_xlim([MIN_X - MAX_R, MAX_X + MAX_R])
+    # ax.set_ylim([MIN_Y - MAX_R, MAX_Y + MAX_R])
 
-    for compound in compounds:
-        x, y = compound.get_coordinates()
-        rand_color = [random.uniform(0.01, 1) for _ in range(3)]
-        plt.plot(x, y, 'o', color=rand_color)
-        circle = plt.Circle((x, y), radius=compound.get_radius(), color=rand_color, alpha=0.2)
-        plt.gca().add_artist(circle)
-        ax.annotate(str(compound.get_compound_id()), (x,y))
-    plt.show()
+    # for compound in compounds:
+    #     x, y = compound.get_coordinates()
+    #     rand_color = [random.uniform(0.01, 1) for _ in range(3)]
+    #     plt.plot(x, y, 'o', color=rand_color)
+    #     circle = plt.Circle((x, y), radius=compound.get_radius(), color=rand_color, alpha=0.2)
+    #     plt.gca().add_artist(circle)
+    #     ax.annotate(str(compound.get_compound_id()), (x,y))
+    # plt.show()
 
     print ("Generated", len(compounds), "compounds.")
     #for compound in compounds:
     #    print(str(compound))
  
     # You can now run and test your algorithm
+    start = time.time()
     trigger_compound  = chain_reaction(compounds)
     print(trigger_compound)
+    end = time.time()
+    print(end-start)
 
 
 def test_labyrinth():

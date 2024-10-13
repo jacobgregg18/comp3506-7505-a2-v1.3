@@ -210,14 +210,14 @@ def dora(graph: Graph, start: int, symbol_sequence: str,
             stack.insert_to_front((left, node[1] + '0'))
         else:
             codeMap.insert_kv(left.get_data(), node[1] + '0')
-            codebook.append((left.get_data(), node[1] + '0'))
+            codebook.append(Entry(left.get_data(), node[1] + '0'))
             #print(node.get_value() + '0')
         
         if right.get_data() is None:
             stack.insert_to_front((right, node[1] + '1'))
         else:
             codeMap.insert_kv(right.get_data(), node[1] + '1')
-            codebook.append((right.get_data(), node[1] + '1'))
+            codebook.append(Entry(right.get_data(), node[1] + '1'))
             #print(node.get_value() + '1')
            
     for x in symbol_sequence:
