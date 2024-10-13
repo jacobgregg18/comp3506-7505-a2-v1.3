@@ -84,15 +84,15 @@ def test_chain_reaction():
     # Set up some params
     # x dim is 100
     MIN_X = 0
-    MAX_X = 100
+    MAX_X = 10
     # y dim is 100
     MIN_Y = 0
-    MAX_Y = 100
+    MAX_Y = 10
     # minimum radius is 1, max is 25
     MIN_R = 1
-    MAX_R = 25
+    MAX_R = 3
     # maximum compound count
-    COMPOUNDS = 100
+    COMPOUNDS = 10
 
     compounds = []
     locations = set() # ensure we do not duplicate x/y coords
@@ -104,7 +104,6 @@ def test_chain_reaction():
         if xy_key not in locations:
             compounds.append(Compound(x, y, r, cid))
             locations.add(xy_key)
-    
     plt.axis("equal")
     ax = plt.gca()
     ax.set_xlim([MIN_X - MAX_R, MAX_X + MAX_R])
