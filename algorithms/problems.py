@@ -307,10 +307,10 @@ def chain_reaction(compounds: list[Compound]) -> int:
     for x in range(size):
         for y in range(size):
             for z in range(size):
-                if reactions[x * size + y] == 1:
+                if reactions[x * size + z] == 1:
                 # Reaction occurs, cycle through reactions and add to X
-                    if reactions[y * size + z] == 1:
-                        reactions[x * size + z] = 1
+                    if reactions[y * size + x] == 1:
+                        reactions[y * size + z] = 1
 
     # Third iteration sums the total reactions
     max_size = -1
