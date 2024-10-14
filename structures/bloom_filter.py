@@ -44,7 +44,7 @@ class BloomFilter:
         self._hashes = int((self._bits / max_keys) * math.log(2) + 1)
         if self._hashes > 15:
             self._hashes = 15
-        self._primes = [98317, 196613, 393241, 786433, 1572869, 3145739, 6291469, 12582917, 25165843, 50331653, 
+        self._primes = [98317, 196613, 393241, 786433, 1572869, 3145739, 6291469, 12582917, 25165843, 50331653,
                         100663319, 201326611, 402653189, 805306457, 1610612741]
         # More variables here if you need, of course
 
@@ -111,7 +111,7 @@ class BloomFilter:
     def hash(self, value: Any, hash_number: int) -> int:
         bytes = structures.util.object_to_byte_array(value)
         bits = int.from_bytes(bytes, "big")
-        
+
         return ((24593 * bits + 49157) % self._primes[hash_number]) % self._bits
 
         hash_type = hash_number % 3

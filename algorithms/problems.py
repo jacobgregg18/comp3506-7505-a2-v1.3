@@ -34,9 +34,6 @@ from structures.pqueue import PriorityQueue
 from structures.bloom_filter import BloomFilter
 from structures.util import Hashable
 import math
-import algorithms.pathfinding
-import time
-
 
 
 def maybe_maybe_maybe(database: list[str], query: list[str]) -> list[str]:
@@ -72,9 +69,9 @@ def maybe_maybe_maybe(database: list[str], query: list[str]) -> list[str]:
     bloom = BloomFilter(len(database))    
     for x in database:
         bloom.insert(x)
-    
-    answer = [] 
-    
+
+    answer = []
+
     for x in query:
         if bloom.contains(x) is True:
             answer.append(x)
@@ -82,8 +79,6 @@ def maybe_maybe_maybe(database: list[str], query: list[str]) -> list[str]:
     # DO THE THING
 
     return answer
-
-
 
 def dora(graph: Graph, start: int, symbol_sequence: str,
          ) -> tuple[BitVector, list[Entry]]:
@@ -143,8 +138,7 @@ def dora(graph: Graph, start: int, symbol_sequence: str,
     while queue.get_size() > 0:
         currentNode = queue.remove_min()
         nodes = graph.get_neighbours(currentNode)
-        
-                        
+
         # Node is reachable from the start
         index = symbolMap.find(graph.get_node(currentNode).get_data())
         if index is None:
@@ -155,8 +149,8 @@ def dora(graph: Graph, start: int, symbol_sequence: str,
             frequency.append(1)
         else:
             # Node is in map
-            frequency[index] += 1  
-            
+            frequency[index] += 1
+
         for y in nodes:
             # Not the target, enqueue and add to visited order if not repeated
             if pathMap.find(y.get_id()) is None:
@@ -167,8 +161,8 @@ def dora(graph: Graph, start: int, symbol_sequence: str,
     for x in range(len(frequency)):
         node = TreeNode(symbol[x], frequency[x], None, None)
         queue.insert(frequency[x], node)
-        #print("Symbol: " + str(symbol[x]) + " Frequency: " + str(frequency[x]))
-    
+        # print("Symbol: " + str(symbol[x]) + " Frequency: " + str(frequency[x]))
+
     while queue.get_size() > 1:
         left = queue.remove_min()
         right = queue.remove_min()
@@ -184,30 +178,27 @@ def dora(graph: Graph, start: int, symbol_sequence: str,
         node = stack.remove_from_front()
         left = node[0].get_left()
         right = node[0].get_right()
-        
+
         if right.get_data() is None:
             stack.insert_to_front((right, node[1] + '1'))
         else:
             codeMap.insert_kv(right.get_data(), node[1] + '1')
             codebook.append(Entry(right.get_data(), node[1] + '1'))
-            #print(node.get_value() + '1')
-        
+            # print(node.get_value() + '1')
+
         if left.get_data() is None:
             stack.insert_to_front((left, node[1] + '0'))
         else:
             codeMap.insert_kv(left.get_data(), node[1] + '0')
             codebook.append(Entry(left.get_data(), node[1] + '0'))
-            #print(node.get_value() + '0')
-           
+            # print(node.get_value() + '0')
+
     for x in symbol_sequence:
         huffman = codeMap.find(x)
         for y in huffman:
-            #print(y)
+            # print(y)
             coded_sequence.append(int(y))
 
-    #for code in codebook:
-        #print("Code length is " + str(code.get_value()) + " char is " + str(code.get_key()))
-    
     return (coded_sequence, codebook)
 
 
@@ -236,11 +227,11 @@ def chain_reaction(compounds: list[Compound]) -> int:
 
     """
     maximal_compound = -1
-    
+
     # DO THE THING
     size = len(compounds)
     reactions = [0] * (size * size)
-    
+
     # First iteration adds reactions based on occurance from main reaction
     for x in range(size):
         base = compounds[x].get_coordinates()
@@ -258,7 +249,7 @@ def chain_reaction(compounds: list[Compound]) -> int:
         for y in range(size):
             for z in range(size):
                 if reactions[x * size + z] == 1:
-                # Reaction occurs, cycle through reactions and add to X
+                    # Reaction occurs, cycle through reactions and add to X
                     if reactions[y * size + x] == 1:
                         reactions[y * size + z] = 1
 
@@ -271,7 +262,7 @@ def chain_reaction(compounds: list[Compound]) -> int:
         if sum > max_size:
             max_size = sum
             maximal_compound = compounds[x].get_compound_id()
-            #print(str(maximal_compound) + " " + str(max_size))
+            # print(str(maximal_compound) + " " + str(max_size))
         if sum == max_size:
             if compounds[x].get_compound_id() < maximal_compound:
                 maximal_compound = compounds[x].get_compound_id()
@@ -321,17 +312,17 @@ def labyrinth(offers: list[Offer]) -> tuple[int, int]:
     
     for x in offers:
         if x.get_num_edges() > (x.get_num_nodes() * (x.get_num_nodes() - 1) / 2):
-            #Not a sigmple graph (has over maximum edges)
+            # Not a sigmple graph (has over maximum edges)
             continue
         if x.get_num_edges() < x.get_num_nodes() - 1:
-            #Not a connected graph (Less edges then nodes)
+            # Not a connected graph (Less edges then nodes)
             continue
         if x.get_k() == 1:
             if x.get_num_edges() < (x.get_num_nodes() * (x.get_num_nodes() - 1) / 2):
-                #Not all nodes connected via single edge
+                # Not all nodes connected via single edge
                 continue
         if x.get_k() < 1 or x.get_num_nodes() < 1 or x.get_num_edges() < 0:
-            #Not valid inputs
+            # Not valid inputs
             continue
         if x.get_cost() < best_offer_cost:
             best_offer_cost = x.get_cost()
@@ -341,7 +332,5 @@ def labyrinth(offers: list[Offer]) -> tuple[int, int]:
             if x.get_offer_id() < best_offer_id:
                 best_offer_cost = x.get_cost()
                 best_offer_id = x.get_offer_id()
-            
+
     return (best_offer_id, best_offer_cost)
-
-

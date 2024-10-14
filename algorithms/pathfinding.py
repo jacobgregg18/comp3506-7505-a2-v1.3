@@ -11,7 +11,6 @@ from structures.dynamic_array import DynamicArray
 from structures.graph import Graph, LatticeGraph
 from structures.map import Map
 from structures.pqueue import PriorityQueue
-from structures.bloom_filter import BloomFilter
 from structures.util import Hashable
 
 
@@ -55,7 +54,7 @@ def bfs_traversal(
         currentNode = queue.remove_min()
         visited_order.append(currentNode)
         nodes = graph.get_neighbours(currentNode)
-        
+
         if currentNode == goal:
             # Target reached
             goal_reached = 1
@@ -82,6 +81,7 @@ def bfs_traversal(
     # Return the path and the visited nodes list
     return (path, visited_order)
 
+
 def dijkstra_traversal(graph: Graph, origin: int) -> DynamicArray:
     """
     Task 2.2: Dijkstra Traversal
@@ -99,7 +99,7 @@ def dijkstra_traversal(graph: Graph, origin: int) -> DynamicArray:
     This is because there is no inherent weight on an edge of these
     graphs. It should of course work where edge weights are uniform.
     """
-    valid_locations = DynamicArray() # This holds your answers
+    valid_locations = DynamicArray()  # This holds your answers
 
     # ALGO GOES HERE
     map = Map()
@@ -108,15 +108,15 @@ def dijkstra_traversal(graph: Graph, origin: int) -> DynamicArray:
     map.insert_kv(origin, 0)
     visited = DynamicArray()
     visited.append(origin)
-    
+
     while queue.is_empty() is False:
         currentDistance = queue.get_min_priority()
         currentNode = queue.remove_min()
         nodes = graph.get_neighbours(currentNode)
-        
+
         if currentDistance != map.find(currentNode):
             continue
-        
+
         for node in nodes:
             # Check if Node has a value
             if map.find(node[0].get_id()) is None:
