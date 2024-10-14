@@ -33,7 +33,7 @@ def my_compressor(in_bytes: bytes) -> bytes:
     baseline general purpose compression tool.
     """
     # Implement me!
-    pass
+    return bytes
 
 def my_decompressor(compressed_bytes: bytes) -> bytes:
     """
@@ -42,7 +42,7 @@ def my_decompressor(compressed_bytes: bytes) -> bytes:
     Once again, we've just used xz.
     """ 
     # Implement me!
-    pass
+    return bytes
 
 def compress_file(in_path: str, out_path: str) -> None:
     """
