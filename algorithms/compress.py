@@ -10,6 +10,14 @@ from pathlib import Path
 from typing import Any
 import sys
 import hashlib
+from structures.entry import Entry, Compound, Offer, TreeNode
+from structures.linked_list import DoublyLinkedList, DLLNode
+from structures.bit_vector import BitVector
+from structures.map import Map
+from structures.pqueue import PriorityQueue
+import structures.util
+
+dictionary = dict()
 
 def file_to_bytes(path: str) -> bytes:
     """
@@ -33,7 +41,76 @@ def my_compressor(in_bytes: bytes) -> bytes:
     baseline general purpose compression tool.
     """
     # Implement me!
-    return in_bytes
+    
+    coded_sequence = BitVector()
+    queue = PriorityQueue()
+
+    """
+    list of Entry objects, each entry has key=symbol, value=str. The str
+    value is just an ASCII representation of the bits used to encode the
+    given key. For example: x = Entry("c", "1101")
+    """
+    codebook = []
+    symbol = []
+    frequency = []
+    # DO THE THING
+    symbolMap = Map()
+    visit = 0
+
+    for x in in_bytes:
+        index = symbolMap.find(x)
+        if index is None:
+            # First time being read
+            symbolMap.insert_kv(x, visit)
+            visit += 1
+            symbol.append(x)
+            frequency.append(1)
+        else:
+            # Node is in map
+            frequency[index] += 1
+
+    # Huffman time
+    for x in range(len(frequency)):
+        node = TreeNode(symbol[x], frequency[x], None, None)
+        queue.insert(frequency[x], node)
+        # print("Symbol: " + str(symbol[x]) + " Frequency: " + str(frequency[x]))
+
+    while queue.get_size() > 1:
+        left = queue.remove_min()
+        right = queue.remove_min()
+        node = TreeNode(None, left.get_freq() + right.get_freq(), left, right)
+        queue.insert(node.get_freq(), node)
+
+    tree = queue.remove_min()
+    codeMap = Map()
+    stack = DoublyLinkedList()
+    stack.insert_to_front((tree, ''))
+
+    while stack.get_size() > 0:
+        node = stack.remove_from_front()
+        left = node[0].get_left()
+        right = node[0].get_right()
+
+        if right.get_data() is None:
+            stack.insert_to_front((right, node[1] + '1'))
+        else:
+            codeMap.insert_kv(right.get_data(), node[1] + '1')
+            codebook.append(Entry(right.get_data(), node[1] + '1'))
+            # print(node.get_value() + '1')
+
+        if left.get_data() is None:
+            stack.insert_to_front((left, node[1] + '0'))
+        else:
+            codeMap.insert_kv(left.get_data(), node[1] + '0')
+            codebook.append(Entry(left.get_data(), node[1] + '0'))
+            # print(node.get_value() + '0')
+
+    for x in in_bytes:
+        huffman = codeMap.find(x)
+        for y in huffman:
+            coded_sequence.append(int(y))
+
+    return structures.util.object_to_byte_array(coded_sequence)
 
 def my_decompressor(compressed_bytes: bytes) -> bytes:
     """
