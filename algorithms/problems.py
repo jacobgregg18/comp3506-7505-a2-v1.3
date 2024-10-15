@@ -230,7 +230,9 @@ def chain_reaction(compounds: list[Compound]) -> int:
 
     # DO THE THING
     size = len(compounds)
-    reactions = [0] * (size * size)
+    reactions = DynamicArray()
+    list = [0] * (size * size)
+    reactions.build_from_list(list)
 
     # First iteration adds reactions based on occurance from main reaction
     for x in range(size):
