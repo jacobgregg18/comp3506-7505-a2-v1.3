@@ -66,7 +66,7 @@ def maybe_maybe_maybe(database: list[str], query: list[str]) -> list[str]:
     You must pass each test in the given time limit and be under the given
     fp_rate to get the associated mark for that test.
     """
-    bloom = BloomFilter(len(database))    
+    bloom = BloomFilter(len(database))
     for x in database:
         bloom.insert(x)
 
@@ -80,6 +80,7 @@ def maybe_maybe_maybe(database: list[str], query: list[str]) -> list[str]:
 
     return answer
 
+
 def dora(graph: Graph, start: int, symbol_sequence: str,
          ) -> tuple[BitVector, list[Entry]]:
     """
@@ -89,7 +90,7 @@ def dora(graph: Graph, start: int, symbol_sequence: str,
     a single symbol in the node's data field.
     @start@ is the integer identifier of the start vertex.
     @symbol_sequence@ is the input sequence of symbols, L, with length n.
-    All symbols are guaranteed to be found in G. 
+    All symbols are guaranteed to be found in G.
 
     Return a BitVector encoding symbol_sequence via a minimum redundancy code.
     The BitVector should be read from index 0 upwards (so, the first symbol is
@@ -281,10 +282,10 @@ def labyrinth(offers: list[Offer]) -> tuple[int, int]:
     definition of an Offer. In short, an Offer stores n (number of nodes),
     m (number of edges), and k (diameter) of the given Labyrinth. Each
     Offer also has an associated cost, and a unique offer identifier.
-    
+
     Return the offer identifier and the associated cost for the cheapest
     labyrinth that can be constructed from the list of offers. If there
-    are ties, return the one with the smallest identifier. 
+    are ties, return the one with the smallest identifier.
     You are guaranteed that all offer ids are distinct.
 
     Limitations:
@@ -311,7 +312,7 @@ def labyrinth(offers: list[Offer]) -> tuple[int, int]:
     best_offer_cost = float('inf')
 
     # DO THE THING
-    
+
     for x in offers:
         if x.get_num_edges() > (x.get_num_nodes() * (x.get_num_nodes() - 1) / 2):
             # Not a sigmple graph (has over maximum edges)
