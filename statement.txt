@@ -1,1 +1,3 @@
-Copy copy copy
+Map Hashing and Bloom filter numbers provided by "Good Hash Table Primes" - https://planetmath.org/goodhashtableprimes
+Dora Huffman built from lecture slides
+Chain reaction built using lecture slides

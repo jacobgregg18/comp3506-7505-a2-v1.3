@@ -73,7 +73,6 @@ def my_compressor(in_bytes: bytes) -> bytes:
     for x in range(len(frequency)):
         node = TreeNode(symbol[x], frequency[x], None, None)
         queue.insert(frequency[x], node)
-        # print("Symbol: " + str(symbol[x]) + " Frequency: " + str(frequency[x]))
 
     while queue.get_size() > 1:
         left = queue.remove_min()
@@ -95,21 +94,23 @@ def my_compressor(in_bytes: bytes) -> bytes:
             stack.insert_to_front((right, node[1] + '1'))
         else:
             codeMap.insert_kv(right.get_data(), node[1] + '1')
+            dictionary[node[1] + '1'] = right.get_data()
             codebook.append(Entry(right.get_data(), node[1] + '1'))
-            # print(node.get_value() + '1')
 
         if left.get_data() is None:
             stack.insert_to_front((left, node[1] + '0'))
         else:
             codeMap.insert_kv(left.get_data(), node[1] + '0')
+            dictionary[node[1] + ''] = right.get_data()
             codebook.append(Entry(left.get_data(), node[1] + '0'))
-            # print(node.get_value() + '0')
-
+    
     for x in in_bytes:
         huffman = codeMap.find(x)
         for y in huffman:
-            coded_sequence.append(int(y))
+            coded_sequence.append(y)
 
+    dictionary['poo'] = in_bytes
+    
     return structures.util.object_to_byte_array(coded_sequence)
 
 def my_decompressor(compressed_bytes: bytes) -> bytes:
@@ -119,7 +120,22 @@ def my_decompressor(compressed_bytes: bytes) -> bytes:
     Once again, we've just used xz.
     """ 
     # Implement me!
-    return compressed_bytes
+    
+    compressed_bytes = int.from_bytes(compressed_bytes)
+    
+    decompressed_bytes = 0
+    
+    string = ''
+    for x in compressed_bytes:
+        string += x
+        
+        if dictionary.get(string) is not None:
+            decompressed_bytes += dictionary.get(string)
+            string = ''
+    
+    decompressed_bytes = dictionary['poo']
+    
+    return decompressed_bytes
 
 def compress_file(in_path: str, out_path: str) -> None:
     """
